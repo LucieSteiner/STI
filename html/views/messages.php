@@ -1,27 +1,17 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-include_once('../models/messages.php');
-session_start();
-if(!isset($_SESSION['user'])){
-    header('Location:login.php');
-}
 
+include_once('../utils/check_session.php');
+include_once('../models/messages.php');
+include_once('../includes/nav_bar.php');
+include_once('../includes/logout.php');
 $messages = get_messages($_SESSION['user']);
 ?>
 <html>
     <head>
     </head>
     <body>
-	Hello <?php echo $_SESSION['user']; echo 'Role: '.$_SESSION['role'];?>
-
-        <form action="../views/profile.php">
-            <input type="submit" value="My profile">
-        </form>
-
-        <form action="../utils/logout.php" method="post">
-    	    <input type="submit" value="Log out">
-	</form><br/>
 	<form action="../views/write_message.php">
 	    <input type="submit" value="Nouveau message">
 	</form>

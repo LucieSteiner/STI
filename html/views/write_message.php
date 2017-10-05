@@ -2,7 +2,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once('../models/messages.php');
-session_start();
+include_once('../utils/check_session.php');
+include_once('../includes/nav_bar.php');
+include_once('../includes/logout.php');
 if(isset($_POST['to']) and isset($_POST['title']) and isset($_POST['message'])){
     write_message($_SESSION['user'], $_POST['to'], $_POST['title'], $_POST['message']);
     header('Location: messages.php');

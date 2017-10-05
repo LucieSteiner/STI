@@ -2,6 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once('../models/users.php');
+
 if (!empty ($_POST['login'])  and !empty($_POST['password'])){
     $role = authentify_user($_POST['login'], $_POST['password']);
     if (!is_null($role)){

@@ -1,11 +1,15 @@
 <?php
 include_once('../models/messages.php');
-
+include_once('../utils/check_session.php');
+include_once('../includes/nav_bar.php');
+include_once('../includes/logout.php');
+//TODO: check if the user is the receiver
 if(!isset($_GET['id'])){
     header('Location: messages.php');
 }
 
 $message = get_message_detail($_GET['id']);
+
 ?>
 <html>
     <head>
