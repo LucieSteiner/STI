@@ -7,10 +7,11 @@ include_once('../utils/db.php');
 function get_messages($user){
     $file_db = connect();
 
-    $result = $file_db->prepare('SELECT messages.id, title, time, send.login as sender FROM messages JOIN users AS recv ON recv.id = messages.receiver JOIN users AS send ON send.id = messages.sender WHERE recv.login = ?');
+    $result = $file_db->prepare('SELECT messages.id, title, time, send.login as sender FROM messages JOIN users AS recv ON recv.id = messages.receiver JOIN users AS send ON send.id = messages.sender WHERE recv.login = ? ORDER BY time DESC');
     $result->execute(array($user));
     $data = $result->fetchAll();
 
+    close();
     return $data;
 }
 
@@ -22,7 +23,7 @@ function get_message_detail($id){
     $result->execute(array($id));
     $data = $result->fetch();
 
-    disconnect();
+    close();
     return $data;
 }
 
@@ -35,8 +36,10 @@ function write_message($from, $to, $title, $message){
     $sender = $result->fetch();
     $result->execute(array($to));
     $receiver = $result->fetch();
-    $file_db->exec("INSERT INTO messages (title, time, message, sender, receiver) VALUES ('{$title}', '{$formatted_time}', '{$message}','{$sender['id']}','{$receiver['id']}')");
-    disconnect();
+    $result2 = $file_db->prepare("INSERT INTO messages (title, time, message, sender, receiver) VALUES (?,?,?,?,?)");
+    $result2->execute(array($title, $formatted_time, $message, $sender['id'], $receiver['id']));
+
+    close();
 }
 
 function get_message_receiver($id){
@@ -44,15 +47,16 @@ function get_message_receiver($id){
     $result = $file_db->prepare('SELECT users.login AS recv FROM messages JOIN users ON messages.receiver = users.id WHERE messages.id = ?');
     $result->execute(array($id));
     $receiver = $result->fetch();
-    disconnect();
+    close();
     return $receiver['recv'];
 }
 function delete_message($id){
     $file_db = connect();
 
-    $file_db->exec("DELETE FROM messages WHERE id = '{$id}'");
+    $result = $file_db->prepare("DELETE FROM messages WHERE id = ?");
+    $result->execute(array($id));
 
-    disconnect();
+    close();
 
 }
 ?>

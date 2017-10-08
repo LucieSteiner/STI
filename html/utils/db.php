@@ -1,6 +1,6 @@
 <?php
 function connect(){
-    try{
+ try{
         $file_db = new PDO('sqlite:/var/www/databases/database.sqlite');
         $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $file_db;
@@ -9,7 +9,7 @@ function connect(){
         echo $e->getMessage();
     }
 }
-function disconnect(){
-    $file_db = null;
+function close(){
+   $file_db = null;
 }
 ?>
