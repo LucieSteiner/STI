@@ -1,13 +1,14 @@
 <?php
 include_once('../models/messages.php');
 include_once('../utils/check_session.php');
-//TODO: check if the user is the receiver
 if(!isset($_GET['id'])){
     header('Location: messages.php');
 }
 
 $message = get_message_detail($_GET['id']);
-
+if($message['receiver'] != $_SESSION['user']){
+    header('Location: messages.php');
+}
 ?><!--
 <html>
     <head>
@@ -56,22 +57,35 @@ $message = get_message_detail($_GET['id']);
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <form action="messages.php">
-	    <input type="submit" value="Return to messages">
-	</form>
-        <p>From: <?php echo $message['sender']; ?>
-	<p>Title: <?php echo $message['title']; ?>
-	<p>Time: <?php echo $message['time']; ?>
-	<p>Message: <br/><br/><?php echo $message['message'];?>
-	<form action="../utils/delete_message.php" method="post">
-	    <input type="hidden" name="msg" value="<?php echo $message['id'];?>">
-	    <input type="submit" value="Delete">
-	</form>
-	<form action="write_message.php" method="post">
-	    <input type="hidden" name="reply_to" value="<?php echo $message['sender'];?>">
-	    <input type="hidden" name="reply_title" value="<?php echo $message['title'];?>">
-	    <input type="submit" value="Reply">
-	</form>
+	<div class="row justify-content-center">
+	    <div class="col-md-8">
+              <form action="messages.php" >
+	    	<button class="btn btn-primary float-left" type="submit"><i class="fa fa-fw fa-arrow-left"></i> Return to messages </button>
+	      </form>
+	    </div>
+	  </div><br/>
+	<div class="row justify-content-center">
+	    <div class="col-md-8">
+	      <div class="card">
+  	        <div class="card-header text-muted">
+                <?php echo $message['time'];?>
+                </div>
+                <div class="card-body">
+    	          <h4 class="card-title"><?php echo $message['sender'];?></h4>
+    	          <h6 class="card-subtitle mb-2 "><?php echo $message['title'];?></h6>
+		  <p class="card-text"><?php echo $message['message'];?></p>
+		  <span class="float-right">
+	            <a href="write_message.php?reply_title=<?php echo $message['title'];?>&reply_to=<?php echo $message['sender'];?>" class="btn btn-primary">
+		      <i class="fa fa-fw fa-reply" data-toggle="tooltip" data-original-title="Reply"></i>
+		    </a>
+		    <a href="../utils/delete_message.php?msg=<?php echo $message['id'];?>" class="btn btn-danger">
+		      <i class="fa fa-fw fa-remove" data-toggle="tooltip" data-original-title="Delete"></i>
+		    </a>
+		  </span>
+ 	        </div>
+	      </div><br/>	
+	    </div>
+	  </div>
         </div>
       </div>
     </div>

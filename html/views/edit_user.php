@@ -3,58 +3,19 @@ include_once('../models/users.php');
 include_once('../utils/check_session.php');
 include_once('../utils/check_admin.php');
 
-$user = get_user_detail($_POST['user_id']);
+$user = get_user_detail($_GET['user_id']);
 
-if(isset($_POST['role']) or  isset($_POST['validity']) or isset($_POST['password'])){
-
-    if(!isset($_POST['role'])){
-	$role = $user['role'];
-    }else{
-	$role = $_POST['role'];
-    }
-    if(!isset($_POST['validity'])){
-	$validity = $user['validity'];
-    }else{
-	$validity = $_POST['validity'];
-    }
-    
+if(isset($_POST['role']) and isset($_POST['validity'])){
     if(!isset($_POST['password']) or empty($_POST['password'])){
 	$password = $user['password'];
     }else{
 	$password = crypt($_POST['password']);
     }
-    edit_user($_POST['user_id'], $user['login'], $role, $validity, $password);
+    edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
     header('Location: users.php');
 }
-
-?><!--
-<html>
-    <head>
-    </head>
-    <body>
-	<div id="user_detail">
-	    <p>Login: <?php echo $user['login']; ?>
-	    <p>Role: <?php if($user['role'] == 'admin'){echo "Administrator";} else{echo "Employee";}?>
-	    <p>Active:<?php if($user['validity'] == 1){echo "Yes";} else{echo "No";} ?>
-	</div> 
-	<form action="edit_user.php" method="post">
-	    <label for="role">Role</label>
-	    <select name="role">
-		<option selected disabled hidden>
-		<option value="employee">Employee</option>
-		<option value="admin">Administrator</option>
-	    </select><br/>
-
-	    <label for="validity">Active?</label>
-	    <input type="radio" name="validity" value="1">Yes<br/>
-	    <input type="radio" name="validity" value="0">No<br/>
-	    <label for="password">Password</label>
-	    <input type="password" name="password"><br/>
-	    <input type="hidden" name="user_id" value="<?php echo $_POST['user_id'];?>">	    
-   	    <a href="users.php"><button type="button">Cancel</button></a>
-	    <input type="submit" value="Edit">
-    </body>
-</html>-->
+//TODO: ajouter 2e champ mot de passe
+?><
 <html lang="en">
 
 <head>
@@ -79,28 +40,46 @@ if(isset($_POST['role']) or  isset($_POST['validity']) or isset($_POST['password
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <div id="user_detail">
-	    <p>Login: <?php echo $user['login']; ?>
-	    <p>Role: <?php if($user['role'] == 'admin'){echo "Administrator";} else{echo "Employee";}?>
-	    <p>Active:<?php if($user['validity'] == 1){echo "Yes";} else{echo "No";} ?>
-	  </div> 
-	<form action="edit_user.php" method="post">
-	    <label for="role">Role</label>
-	    <select name="role">
-		<option selected disabled hidden>
-		<option value="employee">Employee</option>
-		<option value="admin">Administrator</option>
-	    </select><br/>
-
-	    <label for="validity">Active?</label>
-	    <input type="radio" name="validity" value="1">Yes<br/>
-	    <input type="radio" name="validity" value="0">No<br/>
-	    <label for="password">Password</label>
-	    <input type="password" name="password"><br/>
-	    <input type="hidden" name="user_id" value="<?php echo $_POST['user_id'];?>">	    
-   	    <a href="users.php"><button type="button">Cancel</button></a>
-	    <input type="submit" value="Edit">
-	</form>
+	  <h1><?php echo $user['login'];?></h1>
+	  <hr></hr>
+	    <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="card">
+		<div class="card-header">Edit user</div>
+      		<div class="card-body">
+        	  <form action="edit_user.php?user_id=<?php echo $_GET['user_id'];?>" method="post">
+		    <div class="form-group">
+		      <label for="role">Role</label>
+		      <select class="form-control" id="role" name="role">
+			<option <?php if ($user['role'] =="employee") {echo "selected ";} ?> value="employee">Employee</option>
+			<option <?php if ($user['role'] =="admin") {echo "selected ";} ?> value="admin">Administrator</option>
+		      </select>
+		    </div>
+		    <fieldset class="form-group">
+	    	      <label>Active?</label>
+	    	      <div class="form-check">
+	      		<label class="form-check-label">
+			  <input <?php if ($user['validity'] == "1") {echo "checked ";} ?> type="radio" class="form-check-input" name="validity"  value="1"> Yes
+		        </label>
+	    	      </div>
+		      <div class="form-check">
+		        <label class="form-check-label">
+			  <input <?php if ($user['validity'] == "0") {echo "checked ";} ?> type="radio" class="form-check-input" name="validity" value="0"> No
+		        </label>
+		      </div>
+	  	    </fieldset>
+		    <div class="form-group">
+		      <label for="password">New password</label>
+		      <input class="form-control" id="password" name="password" type="password">
+		    </div>
+		    <span class="float-right">
+		      <input class="btn btn-success" type="submit" value="Edit">
+		      <a href="users.php"><button class="btn btn-primary" type="button">Cancel</button></a>
+		    </span>
+        	  </form>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </div>

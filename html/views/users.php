@@ -31,12 +31,38 @@ $users = get_all_users();
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
+	<h1>Manage users</h1>
+	  <hr></hr>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+              <form action="create_user.php" >
+	    	<button class="btn btn-primary float-right" type="submit"><i class="fa fa-fw fa-plus"></i> Create new user </button>
+	      </form>
+	    </div>
+	  </div><br/><!--
           <form action="create_user.php">
 	    <input type="submit" value="Create new user">
-	</form>
-	<ul>
+	</form>-->
 	    <?php foreach($users as $user){ ?>
-	    <li>
+	    <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="card">
+                <div class="card-body">
+    	          <h5 class="card-title"><?php echo $user['login']; ?>
+		  <?php if (get_user_id($_SESSION['user']) != $user['id']){?>
+		  <span class="float-right">
+	            <a href="edit_user.php?user_id=<?php echo $user['id'];?>" class="btn btn-primary">
+		      <i class="fa fa-fw fa-edit" data-toggle="tooltip" data-original-title="Edit"></i>
+		    </a>
+		    <a href="../utils/delete_user.php?msg=<?php echo $user['id'];?>" class="btn btn-danger">
+		      <i class="fa fa-fw fa-remove" data-toggle="tooltip" data-original-title="Delete"></i>
+		    </a>
+		  </span>
+		  <?php } ?></h5>
+ 	        </div>
+	      </div><br/>	
+	    </div>
+	  </div><!--
 		<?php echo $user['login']; if (get_user_id($_SESSION['user']) != $user['id']){?>
 
 	    	<form action="edit_user.php" method="post">
@@ -47,8 +73,8 @@ $users = get_all_users();
 		    <input type="hidden" name="to_delete" value="<?php echo $user['id'];?>">
 		    <input type="submit" value="Delete">
 		</form>	
-		<?php } ?>
-	    </li>    
+		<?php } ?>-->
+	      
 	    <?php } ?>
 	</ul>
         </div>

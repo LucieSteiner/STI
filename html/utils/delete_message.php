@@ -1,6 +1,6 @@
 <?php
 include_once('../models/messages.php');
-session_start();
+include_once('check_session.php');
 if(isset($_GET['msg']) and isset($_SESSION['user'])){
     $recv = get_message_receiver($_GET['msg']);
     if($recv == $_SESSION['user']){

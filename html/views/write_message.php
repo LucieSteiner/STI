@@ -9,7 +9,7 @@ if(isset($_POST['to']) and isset($_POST['title']) and isset($_POST['message'])){
 }
 if(isset($_GET['reply_to']) and isset($_GET['reply_title'])){
     $to = $_GET['reply_to'];
-    $title = $_GET['reply_title'];
+    $title = "Re: ".$_GET['reply_title'];
     unset($_GET['reply_to']);
     unset($_GET['reply_title']);
 }
@@ -17,7 +17,7 @@ else{
     $to = '';
     $title = '';
 }
-
+//TODO: ajouter messages erreur formulaire
 ?>
 <html lang="en">
 
@@ -43,21 +43,38 @@ else{
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <form action="messages.php">
-	    <input type="submit" value="Return to messages">
-	</form>
-        <form action="write_message.php" method="post">
-	    <label>To: </label>
-	    <input type="text" name="to" value="<?php echo $to;?>"><br/>
-	    
-	    <label>Title: </label>
-	    <input type="text" name="title" value="<?php echo $title;?>"><br/>
-	
-	    <label>Message:</label><br/>
-	    <textarea name="message"></textarea><br/>
-
-	    <input type="submit" value="Submit">
-	</form>
+	  <div class="row justify-content-center">
+	    <div class="col-md-6">
+              <form action="messages.php" >
+	    	<button class="btn btn-primary float-left" type="submit"><i class="fa fa-fw fa-arrow-left"></i> Return to messages </button>
+	      </form>
+	    </div>
+	  </div><br/>
+	  <div class="row justify-content-center">
+	    <div class="col-md-6">
+	      <div class="card">
+	      <div class="card-header">New message</div>
+      		<div class="card-body">
+        	  <form action="write_message.php" method="post">
+          	    <div class="form-group">
+            	      <label for="to">To:</label>
+            	      <input class="form-control" id="to" name="to" type="text" value="<?php echo $to; ?>">
+          	    </div>
+		    <div class="form-group">
+		      <label for="title">Title:</label>
+		      <input class="form-control" id="title" name="title" type="text" value="<?php echo $title; ?>">
+		    </div>
+	  	    <div class="form-group">
+    	    	      <label for="body">Message:</label>
+    	      	      <textarea class="form-control" id="body" name="message" rows="3"></textarea>
+          	    </div>
+          	    <input class="btn btn-primary float-right" type="submit" value="Send">
+        	  </form>
+                </div>
+              </div>
+	      <div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ if (!empty ($_POST['login'])  and !empty($_POST['password'])){
         header('Location: ../views/messages.php');
     }
     else{
+	//TODO: Afficher message au bon endroit (different en fonction de l'erreur)
         echo 'Wrond credentials!';
     }
 }
@@ -54,7 +55,7 @@ if (!empty ($_POST['login'])  and !empty($_POST['password'])){
         <form action="../views/login.php" method="post">
           <div class="form-group">
             <label for="inputUsername">Username</label>
-            <input class="form-control" id="inputUsername" name="login" type="texT">
+            <input class="form-control" id="inputUsername" name="login" type="text">
           </div>
           <div class="form-group">
             <label for="inputPassword">Password</label>

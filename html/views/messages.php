@@ -36,12 +36,16 @@ $messages = get_messages($_SESSION['user']);
 	  <div class="row justify-content-center">
 	    <div class="col-md-8">
               <form action="../views/write_message.php" >
-	    	<button class="btn btn-primary float-right" type="submit"><i class="fa fa-fw fa-plus"></i> Nouveau message </button>
+	    	<button class="btn btn-primary float-right" type="submit"><i class="fa fa-fw fa-plus"></i> New message </button>
 	      </form>
 	    </div>
 	  </div>
 	  </br>
-	  <?php foreach($messages as $message){ ?>
+	  <?php if(count($messages) == 0){ ?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-8 alert alert-info" role="alert">You don't have any messages yet.</div>
+	  </div>
+	  <?php } else{foreach($messages as $message){ ?>
 	  <div class="row justify-content-center">
 	    <div class="col-md-8">
 	      <div class="card">
@@ -50,7 +54,7 @@ $messages = get_messages($_SESSION['user']);
                 </div>
                 <div class="card-body">
     	          <h4 class="card-title"><?php echo $message['sender'];?></h4>
-    	          <p class="card-text"><?php echo $message['title'];?></p>
+    	          <p class="card-subtitle"><?php echo $message['title'];?></p>
 		  <span class="float-right">
 	            <a href="write_message.php?reply_title=<?php echo $message['title'];?>&reply_to=<?php echo $message['sender'];?>" class="btn btn-primary">
 		      <i class="fa fa-fw fa-reply" data-toggle="tooltip" data-original-title="Reply"></i>
@@ -80,7 +84,7 @@ $messages = get_messages($_SESSION['user']);
 			<input type="submit" value="Reply">
 		    </form>
 	   -->
-	<?php } ?>
+	<?php }} ?>
         </div>
       </div>
     </div>

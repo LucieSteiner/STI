@@ -13,33 +13,8 @@ if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']
 	header('Location: users.php');
     }
 }
-
-?><!--
-<html>
-    <head>
-    </head>
-    <body>
-	<form action="create_user.php" method="post">
-	    <label for="login">Login</label>
-	    <input type="text" name="login"><br/>
-
-	    <label for="role">Role</label>
-	    <select name="role">
-		<option value="employee">Employee</option>
-		<option value="admin">Administrator</option>
-	    </select><br/>
-
-	    <label for="validity">Active?</label>
-	    <input type="radio" name="validity" value="1">Yes<br/>
-	    <input type="radio" name="validity" value="0">No<br/>
-	    <label for="password">Password</label>
-	    <input type="password" name="password"><br/>
-	    
-   	    <a href="users.php"><button type="button">Cancel</button></a>
-	    <input type="submit" value="Create">
-	</form>
-    </body>
-</html>-->
+//TODO: ajouter 2e champ mot de passe
+?>
 <html lang="en">
 
 <head>
@@ -64,25 +39,51 @@ if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <form action="create_user.php" method="post">
-	    <label for="login">Login</label>
-	    <input type="text" name="login"><br/>
-
-	    <label for="role">Role</label>
-	    <select name="role">
-		<option value="employee">Employee</option>
-		<option value="admin">Administrator</option>
-	    </select><br/>
-
-	    <label for="validity">Active?</label>
-	    <input type="radio" name="validity" value="1">Yes<br/>
-	    <input type="radio" name="validity" value="0">No<br/>
-	    <label for="password">Password</label>
-	    <input type="password" name="password"><br/>
-	    
-   	    <a href="users.php"><button type="button">Cancel</button></a>
-	    <input type="submit" value="Create">
-	</form>
+	  <h1>New user</h1>
+	  <hr></hr>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="card">
+      		<div class="card-header">Create new user</div>
+      		<div class="card-body">
+        	  <form action="create_user.php" method="post">
+          	    <div class="form-group">
+            	      <label for="login">Login</label>
+            	      <input class="form-control" id="login" name="login" type="text">
+          	    </div>
+		    <div class="form-group">
+		      <label for="role">Role</label>
+		      <select class="form-control" id="role" name="role">
+			<option value="employee">Employee</option>
+			<option value="admin">Administrator</option>
+		      </select>
+		    </div>
+		    <fieldset class="form-group">
+	    	      <label>Active?</label>
+	    	      <div class="form-check">
+	      		<label class="form-check-label">
+			  <input type="radio" class="form-check-input" name="validity" id="optionsRadios1" value="1"> Yes
+		        </label>
+	    	      </div>
+		      <div class="form-check">
+		        <label class="form-check-label">
+			  <input type="radio" class="form-check-input" name="validity" id="optionsRadios2" value="0"> No
+		        </label>
+		      </div>
+	  	    </fieldset>
+		    <div class="form-group">
+		      <label for="password">Password</label>
+		      <input class="form-control" id="password" name="password" type="password">
+		    </div>
+		    <span class="float-right">
+		      <input class="btn btn-success" type="submit" value="Create">
+		      <a href="users.php"><button class="btn btn-primary" type="button">Cancel</button></a>
+		    </span>
+        	  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

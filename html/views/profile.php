@@ -17,20 +17,8 @@ if(isset($_POST['old']) and isset($_POST['new']) and isset($_POST['new2'])){
         }
    }
 }
-?><!--
-<html>
-<head>
-</head>
-<body>
-<?php echo $_SESSION['user'];?>
-<form action="../views/profile.php" method="post">
-<input type="password" name="old" placeholder="Current password"><br/>
-<input type="password" name="new" placeholder="New password"><br/>
-<input type="password" name="new2" placeholder="Confirm new password"><br/>
-<input type="submit" value="Submit">
-</form>
-</body>
-</html>-->
+//TODO: ajouter erreurs champs et confirmation
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -56,13 +44,34 @@ if(isset($_POST['old']) and isset($_POST['new']) and isset($_POST['new2'])){
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <?php echo $_SESSION['user'];?>
-		<form action="../views/profile.php" method="post">
-		<input type="password" name="old" placeholder="Current password"><br/>
-		<input type="password" name="new" placeholder="New password"><br/>
-		<input type="password" name="new2" placeholder="Confirm new password"><br/>
-		<input type="submit" value="Submit">
+	  <h1>Profile: <?php echo $_SESSION['user'];?></h1>
+	  <hr></hr>
+          
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="card">
+                <div class="card-header">Change password</div>
+                <div class="card-body">
+                  <form action="../views/profile.php" method="post">
+          	    <div class="form-group">
+            	      <label for="old">Current password</label>
+                        <input class="form-control" id="old" name="old" type="password">
+          	    </div>
+		  <div class="form-group">
+		    <label for="new">New password</label>
+		    <input class="form-control" id="new" name="new" type="password">
+		  </div>
+		  <div class="form-group">
+		    <label for="new2">Confirm new password</label>
+		    <input class="form-control" id="new2" name="new2" type="password">
+		  </div>
+		  <input class="btn btn-primary float-right" type="submit" value="Submit">
 		</form>
+	      </div>
+        </div>
+    </div>
+</div>
+
         </div>
       </div>
     </div>
