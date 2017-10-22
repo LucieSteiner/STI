@@ -36,10 +36,14 @@ function write_message($from, $to, $title, $message){
     $sender = $result->fetch();
     $result->execute(array($to));
     $receiver = $result->fetch();
+    if(empty($receiver)){
+        return false;
+    }
     $result2 = $file_db->prepare("INSERT INTO messages (title, time, message, sender, receiver) VALUES (?,?,?,?,?)");
     $result2->execute(array($title, $formatted_time, $message, $sender['id'], $receiver['id']));
 
     close();
+    return true;
 }
 
 function get_message_receiver($id){

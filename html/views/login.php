@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once('../models/users.php');
-
+$wrong_cred = null;
 if (!empty ($_POST['login'])  and !empty($_POST['password'])){
     $role = authentify_user($_POST['login'], $_POST['password']);
     if (!is_null($role)){
@@ -12,24 +12,11 @@ if (!empty ($_POST['login'])  and !empty($_POST['password'])){
         header('Location: ../views/messages.php');
     }
     else{
-	//TODO: Afficher message au bon endroit (different en fonction de l'erreur)
-        echo 'Wrond credentials!';
+        $wrong_cred = 'Wrong credentials!';
     }
 }
 
 ?>
-<!--
-<html>
-	<head>
-	</head>
-	<body>
-		<form action="../views/login.php" method="post">
-			<input type="text" name="login">
-			<input type="password" name="password">
-			<input type="submit" value="Log in">
-		</form>
-	</body>
-</html>-->
 <html lang="en">
 
 <head>
@@ -49,9 +36,17 @@ if (!empty ($_POST['login'])  and !empty($_POST['password'])){
 
 <body class="bg-dark">
   <div class="container">
+    
     <div class="card card-login mx-auto mt-5">
       <div class="card-header">Login</div>
       <div class="card-body">
+        <?php if(!is_null($wrong_cred)){?>
+	  
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $wrong_cred; ?>
+	      </div>
+	    
+    <?php }?>
         <form action="../views/login.php" method="post">
           <div class="form-group">
             <label for="inputUsername">Username</label>

@@ -26,9 +26,8 @@ function authentify_user($login, $password){
     return null;
 }
 
-function change_user_password($user, $old, $new, $new2){
-    // check if old is correct
-    // check if new and new2 are equal
+function change_user_password($user, $old, $new){
+
     $file_db = connect();
     
         if(!is_null(authentify_user($user, $old))){

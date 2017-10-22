@@ -2,18 +2,23 @@
 include_once('../models/users.php');
 include_once('../utils/check_session.php');
 include_once('../utils/check_admin.php');
+$wrong_password = null;
+$wrong_login = null;
 
-
-if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password'])){
+if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password']) and isset($_POST['password2'])){
+    if ($_POST['password'] != $_POST['password2']){
+	$wrong_password = "The two passwords should be identical!";
+    }else{
     $result = create_user($_POST['login'], $_POST['role'], $_POST['validity'], crypt($_POST['password']));
     if(!$result){
-	echo 'This username is not available!';
+	$wrong_login = "This login already exists!";
     }
     else{
 	header('Location: users.php');
     }
+    }
 }
-//TODO: ajouter 2e champ mot de passe
+
 ?>
 <html lang="en">
 
@@ -41,6 +46,24 @@ if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']
         <div class="col-12">
 	  <h1>New user</h1>
 	  <hr></hr>
+	  <?php if(!is_null($wrong_password)){?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $wrong_password; ?>
+	      </div>
+	    </div>
+          </div>
+	  <?php }?>
+	  <?php if(!is_null($wrong_login)){?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $wrong_login; ?>
+	      </div>
+	    </div>
+          </div>
+	  <?php }?>
 	  <div class="row justify-content-center">
 	    <div class="col-md-4">
 	      <div class="card">
@@ -49,31 +72,32 @@ if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']
         	  <form action="create_user.php" method="post">
           	    <div class="form-group">
             	      <label for="login">Login</label>
-            	      <input class="form-control" id="login" name="login" type="text">
+            	      <input class="form-control" id="login" name="login" type="text" required>
           	    </div>
 		    <div class="form-group">
 		      <label for="role">Role</label>
-		      <select class="form-control" id="role" name="role">
+		      <select class="form-control" id="role" name="role" required>
+			<option disabled selected value></option>
 			<option value="employee">Employee</option>
 			<option value="admin">Administrator</option>
 		      </select>
 		    </div>
-		    <fieldset class="form-group">
 	    	      <label>Active?</label>
-	    	      <div class="form-check">
-	      		<label class="form-check-label">
-			  <input type="radio" class="form-check-input" name="validity" id="optionsRadios1" value="1"> Yes
-		        </label>
-	    	      </div>
-		      <div class="form-check">
-		        <label class="form-check-label">
-			  <input type="radio" class="form-check-input" name="validity" id="optionsRadios2" value="0"> No
-		        </label>
+	 		<div>
+			  <input type="radio"  name="validity" id="optionsRadios1" value="1" required> 
+		        <label>Yes</label>
+	    	        </div>
+		      <div>
+			  <input type="radio" name="validity" id="optionsRadios2" value="0" required > 
+		        <label>No</label>
 		      </div>
-	  	    </fieldset>
 		    <div class="form-group">
 		      <label for="password">Password</label>
-		      <input class="form-control" id="password" name="password" type="password">
+		      <input class="form-control" id="password" name="password" type="password" required>
+		    </div>
+		    <div class="form-group">
+		      <label for="password2">Confirm password</label>
+		      <input class="form-control" id="password2" name="password2" type="password" required>
 		    </div>
 		    <span class="float-right">
 		      <input class="btn btn-success" type="submit" value="Create">

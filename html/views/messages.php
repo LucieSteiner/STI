@@ -25,7 +25,6 @@ $messages = get_messages($_SESSION['user']);
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-  <!-- Navigation-->
     <?php include("../includes/nav_bar.php"); ?>
   <div class="content-wrapper">
     <div class="container-fluid">
@@ -43,7 +42,8 @@ $messages = get_messages($_SESSION['user']);
 	  </br>
 	  <?php if(count($messages) == 0){ ?>
 	  <div class="row justify-content-center">
-	    <div class="col-md-8 alert alert-info" role="alert">You don't have any messages yet.</div>
+	    <div class="col-md-8">
+		<div class= "alert alert-info" role="alert">You don't have any messages yet.</div>
 	  </div>
 	  <?php } else{foreach($messages as $message){ ?>
 	  <div class="row justify-content-center">
@@ -70,20 +70,6 @@ $messages = get_messages($_SESSION['user']);
 	      </div><br/>	
 	    </div>
 	  </div>
-<!--
-		    <p> From: <?php echo $message['sender'];?>
-		    <p> Subject: <?php echo $message['title'];?>
-		    <p> Time: <?php echo $message['time'];?>
-		    <form action="../utils/delete_message.php" method="post">
-			<input type="hidden" name="msg" value="<?php echo $message['id'];?>">
-			<input type="submit" value="Delete">
-		    </form>
-		    <form action="write_message.php" method="post">
-			<input type="hidden" name="reply_title" value="<?php echo $message['title'];?>">
-			<input type="hidden" name="reply_to" value="<?php echo $message['sender'];?>">
-			<input type="submit" value="Reply">
-		    </form>
-	   -->
 	<?php }} ?>
         </div>
       </div>

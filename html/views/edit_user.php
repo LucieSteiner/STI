@@ -4,17 +4,26 @@ include_once('../utils/check_session.php');
 include_once('../utils/check_admin.php');
 
 $user = get_user_detail($_GET['user_id']);
+$wrong_password = null;
 
 if(isset($_POST['role']) and isset($_POST['validity'])){
-    if(!isset($_POST['password']) or empty($_POST['password'])){
-	$password = $user['password'];
-    }else{
-	$password = crypt($_POST['password']);
+    if(isset($_POST['password'])){
+        if(isset($_POST['password2']) and ($_POST['password'] == $_POST['password2'])){
+           $password = crypt($_POST['password']);
+           edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
+           header('Location: users.php');
+        }
+        else{
+           $wrong_password = "The two passwords should be identical!";
+        }
     }
-    edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
-    header('Location: users.php');
+    else{
+        $password = $user['password'];
+        edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
+        header('Location: users.php');
+    }
+   
 }
-//TODO: ajouter 2e champ mot de passe
 ?><
 <html lang="en">
 
@@ -42,6 +51,15 @@ if(isset($_POST['role']) and isset($_POST['validity'])){
         <div class="col-12">
 	  <h1><?php echo $user['login'];?></h1>
 	  <hr></hr>
+            <?php if(!is_null($wrong_password)){?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $wrong_password; ?>
+	      </div>
+	    </div>
+          </div>
+	  <?php }?>
 	    <div class="row justify-content-center">
 	    <div class="col-md-4">
 	      <div class="card">
@@ -70,7 +88,11 @@ if(isset($_POST['role']) and isset($_POST['validity'])){
 	  	    </fieldset>
 		    <div class="form-group">
 		      <label for="password">New password</label>
-		      <input class="form-control" id="password" name="password" type="password">
+		      <input class="form-control" id="password" name="password" type="password" >
+		    </div>
+ 		    <div class="form-group">
+		      <label for="password2">Confirm password</label>
+		      <input class="form-control" id="password2" name="password2" type="password" >
 		    </div>
 		    <span class="float-right">
 		      <input class="btn btn-success" type="submit" value="Edit">

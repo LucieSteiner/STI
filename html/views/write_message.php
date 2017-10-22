@@ -3,9 +3,16 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once('../models/messages.php');
 include_once('../utils/check_session.php');
+
+$wrong_user = null;
+
 if(isset($_POST['to']) and isset($_POST['title']) and isset($_POST['message'])){
-    write_message($_SESSION['user'], $_POST['to'], $_POST['title'], $_POST['message']);
-    header('Location: messages.php');
+    if(write_message($_SESSION['user'], $_POST['to'], $_POST['title'], $_POST['message'])){
+        header('Location: messages.php');
+    }
+    else{
+        $wrong_user = "This user doesn't exist!";
+    }
 }
 if(isset($_GET['reply_to']) and isset($_GET['reply_title'])){
     $to = $_GET['reply_to'];
@@ -17,7 +24,7 @@ else{
     $to = '';
     $title = '';
 }
-//TODO: ajouter messages erreur formulaire
+
 ?>
 <html lang="en">
 
@@ -43,6 +50,7 @@ else{
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
+          
 	  <div class="row justify-content-center">
 	    <div class="col-md-6">
               <form action="messages.php" >
@@ -50,6 +58,15 @@ else{
 	      </form>
 	    </div>
 	  </div><br/>
+          <?php if(!is_null($wrong_user)){?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-6">
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $wrong_user; ?>
+	      </div>
+	    </div>
+          </div>
+	  <?php }?>
 	  <div class="row justify-content-center">
 	    <div class="col-md-6">
 	      <div class="card">
@@ -58,7 +75,7 @@ else{
         	  <form action="write_message.php" method="post">
           	    <div class="form-group">
             	      <label for="to">To:</label>
-            	      <input class="form-control" id="to" name="to" type="text" value="<?php echo $to; ?>">
+            	      <input class="form-control" id="to" name="to" type="text" value="<?php echo $to; ?>" required>
           	    </div>
 		    <div class="form-group">
 		      <label for="title">Title:</label>

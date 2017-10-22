@@ -1,23 +1,24 @@
 <?php
 include_once('../models/users.php');
 include_once('../utils/check_session.php');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+$wrong_new = null;
+$wrong_old = null;
+$success = null;
 
 if(isset($_POST['old']) and isset($_POST['new']) and isset($_POST['new2'])){
     if($_POST['new'] != $_POST['new2']){
-	echo 'Error in new password';
+	$wrong_new = 'The two new passwords must be identical!';
     }
     else{
-    	if(change_user_password($_SESSION['user'], $_POST['old'], $_POST['new'], $_POST['new2'])){
-	
-    	    unset($_POST['old']);
-    	    unset($_POST['new']);
-    	    unset($_POST['new2']);
+    	if(change_user_password($_SESSION['user'], $_POST['old'], $_POST['new'])){
+	    $success = "Your password has been changed successfully!";
         }else{
-	    echo 'Old password is wrong!';	
+	    $wrong_old = "The current password is wrong!";	
         }
    }
 }
-//TODO: ajouter erreurs champs et confirmation
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +47,33 @@ if(isset($_POST['old']) and isset($_POST['new']) and isset($_POST['new2'])){
         <div class="col-12">
 	  <h1>Profile: <?php echo $_SESSION['user'];?></h1>
 	  <hr></hr>
-          
+          <?php if(!is_null($wrong_new)){?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $wrong_new; ?>
+	      </div>
+	    </div>
+          </div>
+	  <?php }?>
+          <?php if(!is_null($wrong_old)){?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="alert alert-danger" role="alert">
+		<?php echo $wrong_old; ?>
+	      </div>
+	    </div>
+          </div>
+	  <?php }?>
+          <?php if(!is_null($success)){?>
+	  <div class="row justify-content-center">
+	    <div class="col-md-4">
+	      <div class="alert alert-success" role="alert">
+		<?php echo $success; ?>
+	      </div>
+	    </div>
+          </div>
+	  <?php }?>
 	  <div class="row justify-content-center">
 	    <div class="col-md-4">
 	      <div class="card">

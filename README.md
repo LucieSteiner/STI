@@ -1,8 +1,4 @@
-TODO: 
-
-* gestion erreur(alertes, champs)
-* confirmation formulaires
-* ajouter 2e champ password creation/modification user
+TODO:
 
 * URL rewriting
 * Affichage messages envoyés
