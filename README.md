@@ -1,4 +1,4 @@
-# STI Labo 1 #
+# STI Projet 1 #
 ### Yosra Harbaoui et Lucie Steiner, 24.10.2017 ###
 
 ## Lancement de l'application ## 
