@@ -6,7 +6,9 @@
 1. Placer les fichiers
 
 - Copier le contenu du dossier html dans /var/www/html
-- Copier le contenu du dossier database dans /var/www/databases
+- Copier le contenu du dossier databases dans /var/www/databases
+- Vérifier que le dossier databases appartient au groupe apache
+- Vérifier que le fichier databases/database.sqlite a les permissions rw pour tous les utilisateurs
 
 2. Créer la base de données
 
