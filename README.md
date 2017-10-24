@@ -1,7 +1,7 @@
 # STI Labo 1 #
 ### Yosra Harbaoui et Lucie Steiner, 24.10.2017 ###
 
-## Lancement de l'application: ## 
+## Lancement de l'application ## 
 
 1. Placer les fichiers
 
@@ -15,7 +15,7 @@
 
 3. Lancer le service httpd
 
-- sudo systemctl start httpd
+- Effectuer la commande: sudo systemctl start httpd
 
 4. Accéder à l'application
 
