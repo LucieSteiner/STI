@@ -39,10 +39,7 @@ $users = get_all_users();
 	    	<button class="btn btn-primary float-right" type="submit"><i class="fa fa-fw fa-plus"></i> Create new user </button>
 	      </form>
 	    </div>
-	  </div><br/><!--
-          <form action="create_user.php">
-	    <input type="submit" value="Create new user">
-	</form>-->
+	  </div><br/>
 	    <?php foreach($users as $user){ ?>
 	    <div class="row justify-content-center">
 	    <div class="col-md-4">
@@ -62,18 +59,7 @@ $users = get_all_users();
  	        </div>
 	      </div><br/>	
 	    </div>
-	  </div><!--
-		<?php echo $user['login']; if (get_user_id($_SESSION['user']) != $user['id']){?>
-
-	    	<form action="edit_user.php" method="post">
-		    <input type="hidden" name="user_id" value="<?php echo $user['id'];?>">
-		    <input type="submit" value="Edit">
-		</form>
-		<form action="../utils/delete_user.php">
-		    <input type="hidden" name="to_delete" value="<?php echo $user['id'];?>">
-		    <input type="submit" value="Delete">
-		</form>	
-		<?php } ?>-->
+	  </div>
 	      
 	    <?php } ?>
 	</ul>
@@ -85,7 +71,6 @@ $users = get_all_users();
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright © Your Website 2017</small>
         </div>
       </div>
     </footer>
