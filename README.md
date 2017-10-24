@@ -1,4 +1,7 @@
-Lancement de l'application: 
+# STI Labo 1 #
+### Yosra Harbaoui et Lucie Steiner, 24.10.2017 ###
+
+## Lancement de l'application: ## 
 
 1. Placer les fichiers
 
@@ -8,8 +11,7 @@ Lancement de l'application:
 2. Créer la base de données
 
 - Effectuer la commande: php create_db.php
-
-La base de données est initialisée avec un utilisateur administrateur (login: admin, password: admin)
+- La base de données est initialisée avec un utilisateur administrateur (login: admin, password: admin)
 
 3. Lancer le service httpd
 
