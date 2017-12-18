@@ -51,7 +51,7 @@ $users = get_all_users();
 	            <a href="edit_user.php?user_id=<?php echo $user['id'];?>" class="btn btn-primary">
 		      <i class="fa fa-fw fa-edit" data-toggle="tooltip" data-original-title="Edit"></i>
 		    </a>
-		    <a href="../utils/delete_user.php?msg=<?php echo $user['id'];?>" class="btn btn-danger">
+		    <a href="../utils/delete_user.php?to_delete=<?php echo $user['id'];?>" class="btn btn-danger">
 		      <i class="fa fa-fw fa-remove" data-toggle="tooltip" data-original-title="Delete"></i>
 		    </a>
 		  </span>

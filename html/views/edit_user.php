@@ -7,7 +7,7 @@ $user = get_user_detail($_GET['user_id']);
 $wrong_password = null;
 
 if(isset($_POST['role']) and isset($_POST['validity'])){
-    if(isset($_POST['password'])){
+    if(isset($_POST['password']) and !empty($_POST['password'])){
         if(isset($_POST['password2']) and ($_POST['password'] == $_POST['password2'])){
            $password = crypt($_POST['password']);
            edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
