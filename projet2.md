@@ -19,7 +19,17 @@ TODO
 
 #### Identification des biens
 
+- application
+- serveur ? 
+- informations des utilisateurs 
+- messages 
+
 #### Définition du permiètre de sécurisation
+
+Mots de passe faible
+Afin de contrer les mots de passe du style "1234" ou "admin", une possibilité est de forcer l'utilisateur à entrer des mots de passe sûrs (un nombre minimal de caractères, des chiffres et des lettres ainsi que des caractères spéciaux). Cependant, ce genre de pratique pousse (trop) souvent l'utilisateur à ne pas retenir ce mot de passe et à le noter sous le clavier. Nous avons donc choisi de ne pas implémenter ce genre de fonctionnalités. Les mots de passe sont protégés dans la base de données avec une fonction de hachage, mais rien de plus. Si un compte est hacké à cause d'un mot de passe trop faible, seul l'utilisateur est responsable. 
+
+(Mettre un easter egg si l'utilisateur entre un mot de passe un peu nul en mode : c'est pas bien)
 
 ### Identification des sources de menaces
 
@@ -44,7 +54,17 @@ TODO
 
 #### Scénario(s) d’attaque
 
+Pour les scéanrios qui suivent, nous imaginerons que Jean-Kévin est un administrateur de notre application. Il est plutôt sympathique, mais un poil candide. Il pense vivre dans un monde sûr où tout est bien contrôlé. Tous ces scénarios d'attaques sont aussi valables pour un utilisateur lambda, cependant, il est toujours plus intéressant de viser la session d'un admin, visant ainsi plus de privilèges. 
 
+- injections SQL afin de récupérer les mdp / role etc...
+- injections XSS afin de modifier le code 
+- brute force d'un compte
+
+
+
+Fonction logout 
+Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Un pirate prend alors sa place devant l'ordinateur. Il appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Il a désormais accès aux mails de Jean-Kévin ! (SIE)
+-> fonction déjà implémentée, à justifier ! 
 
 #### STRIDE
 
