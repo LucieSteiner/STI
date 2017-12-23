@@ -56,15 +56,44 @@ Afin de contrer les mots de passe du style "1234" ou "admin", une possibilité e
 
 Pour les scéanrios qui suivent, nous imaginerons que Jean-Kévin est un administrateur de notre application. Il est plutôt sympathique, mais un poil candide. Il pense vivre dans un monde sûr où tout est bien contrôlé. Tous ces scénarios d'attaques sont aussi valables pour un utilisateur lambda, cependant, il est toujours plus intéressant de viser la session d'un admin, visant ainsi plus de privilèges. 
 
-- injections SQL afin de récupérer les mdp / role etc...
-- injections XSS afin de modifier le code 
-- brute force d'un compte
+
+Hachage de mots de passe
 
 
 
+Injections SQL 
+Christophe-Jean a pris quelques cours de base de données pendant les vacances. Il a notamment appris q'un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Voulant absolument connaître l'email de la copine de Jean-Kévin,  il décide donc de passer à l'action... Dans la page de login, il entre donc les informations
+```
+' OR 1=1 //
+```
+afin de récupérer les mdp / role etc... (SIE)
+-> contrôle que les 2 champs ne soient pas vide
+-> utilisation de authentify_user() dans user avec les fonctions prepare() et execute() qui permettent de parser les strings et de rendre impraticable les injections SQL. Toute information entrée par l'utilisateur est alors traité comme une string et il est donc impossible pour Christophe-Jean de pratiquer une injection SQL.
+
+non répudiation des messages ? 
+possible de faire une signature pour chaque user? ?
+
+
+Brute force d'un compte
+Christophe-Jean, ayant suivi les informations de ces derniers jours, a appris qu'une base de données contant 9GB de mots de passe était disponible sur l'Internet mondial. Bien décidé à avoir l'email de la copine de Jean-Kévin, il décide de tester tous les mots de passe de la base de données sur le compte de Jean-Kévin. 
+
+
+Vol de session
+Jean-Kévin, à la suite d'une rupture difficile, ère sur l'Internet mondial en recherche de réconfort. Christophe-Jean qui souhaite connaître les détails de la rupture, mais qui n'ose pas aller lui parler directement, envoie à Jean-Kévin un lien par mail qui lui promet qu'il va retrouver l'amour dans les deux minutes. Jean-Kévin, convaincu d'un signe du destin, clique sur le lien. Horreur ! Il s'agissait en fait d'une tentative de vol de session ! En effet, en cliquant sur le lien, Jean-Kévin a lancé un script qui récupère le cookie de session (SIE)
+-> ajout dans le fichier check_session des deux lignes 
+```php
+/* Prevents attacks in order to steal the session ID */
+ini_set('session.cookie_httponly', 1);
+/* Session ID cannot be passed through URLs */
+ini_set('session.use_only_cookies', 1);
+/* Unauthorize sesssion without id */
+ini_set('session.use_strict_mode', 1);
+```
+aller plus loin : localhost en https ? 
+	
 Fonction logout 
 Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Un pirate prend alors sa place devant l'ordinateur. Il appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Il a désormais accès aux mails de Jean-Kévin ! (SIE)
--> fonction déjà implémentée, à justifier ! 
+-> utilisation de session_unset() qui libère toutes les variables de session, session_destroy() qui détruit toutes les variables. Finalement, afin de pouvoir réutiliser à nouveau ses variables de sessions, on appelle la fonction session_start().
 
 #### STRIDE
 
