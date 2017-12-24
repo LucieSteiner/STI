@@ -59,7 +59,9 @@ Pour les scéanrios qui suivent, nous imaginerons que Jean-Kévin est un adminis
 
 Hachage de mots de passe
 
+Information sur le serveur 
 
+Déni de service ?? 
 
 Injections SQL 
 Christophe-Jean a pris quelques cours de base de données pendant les vacances. Il a notamment appris q'un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Voulant absolument connaître l'email de la copine de Jean-Kévin,  il décide donc de passer à l'action... Dans la page de login, il entre donc les informations
@@ -74,8 +76,17 @@ non répudiation des messages ?
 possible de faire une signature pour chaque user? ?
 
 
+Transmission d'information
+Rien dans les URL -> comment ? 
+Tout est set dans un cookie -> comment ? 
+
+
+URL
+Les urls existantes mais qui ne doivent pas être accessibles renvoient un 200 alors que celles qui n'existent pas renvoie un 404. TODO
+
 Brute force d'un compte
 Christophe-Jean, ayant suivi les informations de ces derniers jours, a appris qu'une base de données contant 9GB de mots de passe était disponible sur l'Internet mondial. Bien décidé à avoir l'email de la copine de Jean-Kévin, il décide de tester tous les mots de passe de la base de données sur le compte de Jean-Kévin. 
+-> mettre en place un système de blocage ? 
 
 
 Vol de session
