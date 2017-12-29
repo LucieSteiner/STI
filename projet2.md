@@ -63,6 +63,11 @@ Information sur le serveur
 
 Déni de service ?? 
 
+Utilisation de HTTPS
+Jean Kévin se réveille un matin avec la sensation que quelque chose ne va pas : TOUTES les informations concernant son application de messagerie passent en clair sur le réseau ! Ne pouvant plus ignorer ce fait, Jean-Kévin s'empresse d'installer un certificat, afin que des attaquants potentiels se trouvant dans le même réseau que lui ne puisse pas lui voler son mot de passe. À noter que Jean-Kévin, ne faisant confiance à personne, à signer son certificat lui-même. C'est ainsi que lors de la première connexion au site, il faut accepter ce certificat auto-signé.
+Afin de pouvoir installer son certificat, il faut lancer le script enable-https.sh qui se trouve dans le dossier conf/ssl/.
+
+
 Injections SQL 
 Christophe-Jean a pris quelques cours de base de données pendant les vacances. Il a notamment appris q'un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Voulant absolument connaître l'email de la copine de Jean-Kévin,  il décide donc de passer à l'action... Dans la page de login, il entre donc les informations
 ```
