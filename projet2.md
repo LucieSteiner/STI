@@ -34,16 +34,16 @@ Afin de contrer les mots de passe du style "1234" ou "admin", une possibilité e
 ### Identification des sources de menaces
 
 - un pirate 
-	La première source de menace est représentée ici par un pirate informatique. Le but de sa manœuvre serait simplement de détruire l'application, par challenge ou parce que la source numéro 2 l'aurait payé pour. Il peut aussi vouloir récupérer les informations contenues dans la base de données, par exemple les mots de passe, car la plupart des utilisateurs utilisent le même mot de passe pour plusieurs applications. Il lui serait donc possible d'aller hacker des comptes Facebook. 
+  La première source de menace est représentée ici par un pirate informatique. Le but de sa manœuvre serait simplement de détruire l'application, par challenge ou parce que la source numéro 2 l'aurait payé pour. Il peut aussi vouloir récupérer les informations contenues dans la base de données, par exemple les mots de passe, car la plupart des utilisateurs utilisent le même mot de passe pour plusieurs applications. Il lui serait donc possible d'aller hacker des comptes Facebook. 
 
 - un utilisateur frustré ou malveillant 
-	Source de menace numéro 2. Si l'utilisateur est suffisamment qualifié pour hacker l'application lui-même, il ne va pas avoir recours aux services d'un pirate. Ses motivations sont diverses : son compte a été désactivé et il souhaite le récupérer, il tente d'élever ses privilèges pour devenir administrateur. Finalement, il peut aussi vouloir lire des messages qui ne lui étaient pas destinés.
+  Source de menace numéro 2. Si l'utilisateur est suffisamment qualifié pour hacker l'application lui-même, il ne va pas avoir recours aux services d'un pirate. Ses motivations sont diverses : son compte a été désactivé et il souhaite le récupérer, il tente d'élever ses privilèges pour devenir administrateur. Finalement, il peut aussi vouloir lire des messages qui ne lui étaient pas destinés.
 
 - un programme malveillant 
-	La différence entre le pirate et le programme est que, afin d'empêcher le pirate d'agir, on va essayer de le forcer à s'authentifier, afin de restreindre ses droits en conséquence. Ainsi, il ne sera pas en muse d'accéder à l'application. Le programme lui, ne passe pas par la case authentification. Il s'agit donc ici de contrôler les injections de code, ou les requêtes suspicieuses et de bloquer les programmes non-reconnus par l'application. 
+  La différence entre le pirate et le programme est que, afin d'empêcher le pirate d'agir, on va essayer de le forcer à s'authentifier, afin de restreindre ses droits en conséquence. Ainsi, il ne sera pas en muse d'accéder à l'application. Le programme lui, ne passe pas par la case authentification. Il s'agit donc ici de contrôler les injections de code, ou les requêtes suspicieuses et de bloquer les programmes non-reconnus par l'application. 
 
 - menace physique 
-	Sous-entendu, une catastrophe naturelle, un sinistre, comme un incendie ou une inondation qui endommagerait le matériel qui contient l'application. À noter que ce type de menaces n'est pas pris en compte dans le présent rapport. Nous avons effectué des sauvegardes régulières de l'application, s'il devait se produire une catastrophe et que l'application n'est plus accessible, merci de nous contacter afin que nous vous fournissions les codes sources. 
+  Sous-entendu, une catastrophe naturelle, un sinistre, comme un incendie ou une inondation qui endommagerait le matériel qui contient l'application. À noter que ce type de menaces n'est pas pris en compte dans le présent rapport. Nous avons effectué des sauvegardes régulières de l'application, s'il devait se produire une catastrophe et que l'application n'est plus accessible, merci de nous contacter afin que nous vous fournissions les codes sources. 
 
 
 ### Identification des scénarios d'attaques
@@ -56,10 +56,20 @@ Afin de contrer les mots de passe du style "1234" ou "admin", une possibilité e
 
 Pour les scénarios qui suivent, nous imaginerons que Jean-Kévin est un administrateur de notre application. Il est plutôt sympathique, mais un poil candide. Il pense vivre dans un monde sûr où tout est bien contrôlé. Tous ces scénarios d'attaques sont aussi valables pour un utilisateur lambda, cependant, il est toujours plus intéressant de viser la session d'un admin, visant ainsi plus de privilèges. 
 
-
 Hachage de mots de passe
 Jean-Kévin le sait, un mot de passe, c'est important. Surtout si un utilisateur l'utilise pour plusieurs application. C'est pourquoi Jean-Kévin a stocké le mot de passe haché dans la base de donnée. Ainsi, si la base de donnée est volée, les mots de passe ne sont pas dévoilés.
 -> ajouter un sel ??
+
+
+
+Ajout d'un fichier index.php dans chaque dossier pour éviter de révéler l'arboresence de l'application
+Modification du fichier httpd.conf
+```
+ErrorDocument 404 http://localhost
+```
+Afin de ne pas divulguer d'informations sur l'arboresence des fichiers de l'applicationw
+
+
 
 Information sur le serveur 
 Jean-Kévin, effectuant quelques tests sur son application, se rend compte que - horreur ! - la version du serveur qu'il utilise est visible en clair par tous. Cette information étant compromettante, il décide de remédier à ça. En effet, il suffit d'entrer la version du serveur sur l'Internet mondial pour y trouver toutes les failles répértoriées. (STRIDE, selon la faille trouvée)
@@ -115,7 +125,7 @@ ini_set('session.use_only_cookies', 1);
 ini_set('session.use_strict_mode', 1);
 ```
 aller plus loin : localhost en https ? 
-	
+​	
 Fonction logout 
 Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Un pirate prend alors sa place devant l'ordinateur. Il appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Il a désormais accès aux mails de Jean-Kévin ! (SIE)
 -> utilisation de session_unset() qui libère toutes les variables de session, session_destroy() qui détruit toutes les variables. Finalement, afin de pouvoir réutiliser à nouveau ses variables de sessions, on appelle la fonction session_start().
@@ -126,3 +136,5 @@ Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au trava
 #### En fonction des scénarios d’attaques
 
 ### Conclusion
+
+En effectuant des recherches afin de sécuriser notre application, nous avons remarqué que certaines manipulations avaient déjà été effectuées. Cela est dû au fait 
