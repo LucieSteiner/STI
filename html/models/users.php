@@ -90,4 +90,17 @@ function create_user($user, $role, $validity, $password){
     return true;
 
 }
+
+ function check_password($password) {
+    $uppercase = preg_match('@[A-Z]@', $password);
+    $lowercase = preg_match('@[a-z]@', $password);
+    $number    = preg_match('@[0-9]@', $password);
+    $lenght    = 8;
+
+    if(!$uppercase || !$lowercase || !$number || strlen($password) < $lenght) {
+      return false;
+    }
+    return true;
+ }
+
 ?>
