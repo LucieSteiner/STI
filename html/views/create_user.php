@@ -3,10 +3,11 @@ include_once('../models/users.php');
 include_once('../utils/check_session.php');
 include_once('../utils/check_admin.php');
 $wrong_password = null;
+$weak_password = null;
 $wrong_login = null;
 
 if (isset($_POST['password']) and check_password($_POST['password']) == false) {
-  $wrong_password = "Password must be at least 8 characters and contains at least one capital letter and one number"
+  $weak_password = "Password must be at least 8 characters and contains at least one capital letter and one number"
 } 
 if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password']) and isset($_POST['password2'])){
     if ($_POST['password'] != $_POST['password2']){
@@ -58,6 +59,15 @@ if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']
 	    </div>
           </div>
 	  <?php }?>
+    <?php if(!is_null($weak_password)){?>
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="alert alert-danger" role="alert">
+    <?php echo $weak_password; ?>
+        </div>
+      </div>
+          </div>
+    <?php }?>
 	  <?php if(!is_null($wrong_login)){?>
 	  <div class="row justify-content-center">
 	    <div class="col-md-4">
