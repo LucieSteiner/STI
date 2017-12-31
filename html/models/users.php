@@ -92,12 +92,13 @@ function create_user($user, $role, $validity, $password){
 }
 
  function check_password($password) {
-    $uppercase = preg_match('@[A-Z]@', $password);
-    $lowercase = preg_match('@[a-z]@', $password);
-    $number    = preg_match('@[0-9]@', $password);
-    $lenght    = 8;
+    $uppercase = preg_match('/[A-Z]/', $password);
+    $lowercase = preg_match('/[a-z]/', $password);
+    $number    = preg_match('/\d/', $password);
+    $special   = preg_match('/[^a-zA-Z\d]/', $password)
+    $length    = 8;
 
-    if(!$uppercase || !$lowercase || !$number || strlen($password) < $lenght) {
+    if(!$uppercase || !$lowercase || !$number || !$special || strlen($password) < $length) {
       return false;
     }
     return true;
