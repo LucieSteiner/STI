@@ -82,7 +82,7 @@ function create_user($user, $role, $validity, $password){
         $file_db = connect();
         $command = $file_db->prepare("INSERT INTO users (login, role, validity, password) VALUES (?,?,?,?)");
         $command->execute(array($user, $role, $validity, $password));
-        close;
+        close();
     }
     catch(PDOException $e){
         return false;
