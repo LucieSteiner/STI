@@ -8,7 +8,7 @@ $wrong_login = null;
 
 if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password']) and isset($_POST['password2'])){
   if (!check_password($_POST['password'])) {
-    $weak_password = "Password must be at least 8 characters and contains at least one capital letter and one number";
+    $weak_password = "Password must be at least 8 characters and contains at least one capital letter, one number and one special character";
   } 
   if ($_POST['password'] != $_POST['password2']){
 	 $wrong_password = "The two passwords should be identical!";
