@@ -6,15 +6,12 @@ $wrong_password = null;
 $weak_password = null;
 $wrong_login = null;
 
-if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password'])) {
-  if (isset($_POST['password']) and check_password($_POST['password']) == false) {
+if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password']) and isset($_POST['password2'])){
+  if (!check_password($_POST['password'])) {
     $weak_password = "Password must be at least 8 characters and contains at least one capital letter and one number"
   } 
-}
-
-if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']) and isset($_POST['password']) and isset($_POST['password2'])){
-    if ($_POST['password'] != $_POST['password2']){
-	$wrong_password = "The two passwords should be identical!";
+  if ($_POST['password'] != $_POST['password2']){
+	 $wrong_password = "The two passwords should be identical!";
     }else{
     $result = create_user($_POST['login'], $_POST['role'], $_POST['validity'], crypt($_POST['password']));
     if(!$result){
