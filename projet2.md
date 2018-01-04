@@ -31,22 +31,25 @@ TODO
 
 Un des risques encourus par toute application est une attaque de type déni de service. Il est en effet possible pour un attaquant d'inonder le serveur de requêtes afin de le rendre inapte. Il existe diverses possibilités pour s'en prémunir, ou en tout cas dissuader l'attaquant, comme par exmple bloquer les adresses IP qui font trop de requêtes dans un court laps de temps. Cependant, un attaquant peut contourner cette mesure en utilisant des proxys, ou simplement plusieurs machines. La question du déni de service étant vaste et complexe et l'application n'étant pour le moment hébergée que sur un ordinateur en localhost, nous ne l'avons pas pris en compte dans le cadre de ce projet. 
 
-## STRIDE
 
 ## Identification des sources de menaces
 
-- un pirate 
-  La première source de menace est représentée ici par un pirate informatique. Le but de sa manœuvre serait simplement de détruire l'application, par challenge ou parce que la source numéro 2 l'aurait payé pour. Il peut aussi vouloir récupérer les informations contenues dans la base de données, par exemple les mots de passe, car la plupart des utilisateurs utilisent le même mot de passe pour plusieurs applications. Il lui serait donc possible d'aller hacker des comptes Facebook. 
+- __un pirate__   
+  La première source de menace est représentée ici par un pirate informatique. Le but de sa manœuvre serait simplement de détruire l'application, par challenge ou parce qu'une source externe l'aurait payé pour. Il pourrait aussi vouloir récupérer les informations contenues dans la base de données, par exemple les mots de passe, car la plupart des utilisateurs utilisent le même mot de passe pour plusieurs applications. Il lui serait donc possible d'aller hacker des comptes Facebook. 
 
-- un utilisateur frustré ou malveillant 
-  Source de menace numéro 2. Si l'utilisateur est suffisamment qualifié pour hacker l'application lui-même, il ne va pas avoir recours aux services d'un pirate. Ses motivations sont diverses : son compte a été désactivé et il souhaite le récupérer, il tente d'élever ses privilèges pour devenir administrateur. Finalement, il peut aussi vouloir lire des messages qui ne lui étaient pas destinés.
+- __un utilisateur frustré ou malveillant__  
+  Si l'utilisateur est suffisamment qualifié pour hacker l'application lui-même, il ne va pas avoir recours aux services d'un pirate. Ses motivations sont diverses : son compte a été désactivé et il souhaite le récupérer, il tente d'élever ses privilèges pour devenir administrateur. Finalement, il peut aussi vouloir lire des messages qui ne lui étaient pas destinés.
 
-- un programme malveillant 
+- __un programme malveillant__  
   La différence entre le pirate et le programme est que, afin d'empêcher le pirate d'agir, on va essayer de le forcer à s'authentifier, afin de restreindre ses droits en conséquence. Ainsi, il ne sera pas en muse d'accéder à l'application. Le programme lui, ne passe pas par la case authentification. Il s'agit donc ici de contrôler les injections de code, ou les requêtes suspicieuses et de bloquer les programmes non-reconnus par l'application. 
 
-- menace physique 
+- __une menace physique__  
   Sous-entendu, une catastrophe naturelle, un sinistre, comme un incendie ou une inondation qui endommagerait le matériel qui contient l'application. À noter que ce type de menaces n'est pas pris en compte dans le présent rapport. Nous avons effectué des sauvegardes régulières de l'application, s'il devait se produire une catastrophe et que l'application n'est plus accessible, merci de nous contacter afin que nous vous fournissions les codes sources. 
 
+
+## STRIDE
+
+STRIDE est un acronyme pour différents niveaux de menaces. Il s'agit d'un modèle de classification qui permet de se rappeler des différentes menaces que l'on peut rencontrer dans une application. Les catégories sont les suivantes : Spoofing (vol d'identité), Tampering (sabotage), Repudiation (authentification), Information disclosure (leak de données), Denial of service, Elevation of privilege.
 
 ## Identification des scénarios d'attaques
 
