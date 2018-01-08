@@ -2,17 +2,22 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once('../models/users.php');
+require_once '../captcha/securimage/securimage.php';
 $wrong_cred = null;
-if (!empty ($_POST['login'])  and !empty($_POST['password'])){
-    $role = authentify_user($_POST['login'], $_POST['password']);
-    if (!is_null($role)){
+$image = new Securimage();
+if (!empty ($_POST['login']) and !empty($_POST['password'])){
+    if ($image->check($_POST['captcha_code']) == true) {
+      $role = authentify_user($_POST['login'], $_POST['password']);
+      if (!is_null($role)){
 	session_start();
 	$_SESSION['user'] = $_POST['login'];
 	$_SESSION['role'] = $role;
         header('Location: ../views/messages.php');
-    }
-    else{
+       }else{
         $wrong_cred = 'Wrong credentials!';
+      }
+    }else{
+      $wrong_cred = 'Wrong captcha!';
     }
 }
 
@@ -55,6 +60,11 @@ if (!empty ($_POST['login'])  and !empty($_POST['password'])){
           <div class="form-group">
             <label for="inputPassword">Password</label>
             <input class="form-control" id="inputPassword" name="password" type="password">
+          </div>
+          <div class="form-group">
+            <?php
+              echo Securimage::getCaptchaHtml();
+            ?>
           </div>
           <input class="btn btn-primary btn-block" type="submit" value="Login">
         </form>
