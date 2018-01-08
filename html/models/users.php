@@ -98,10 +98,10 @@ function create_user($user, $role, $validity, $password){
     $special   = preg_match('/[^a-zA-Z\d]/', $password);
     $length    = 8;
 
-    if(!$uppercase || !$lowercase || !$number || !$special || strlen($password) < $length) {
-      return false;
+    if($uppercase == 1 and $lowercase == 1 and $number == 1 and $special == 1 and strlen($password) >= $length) {
+      return true;
     }
-    return true;
+    return false;
  }
 
 ?>
