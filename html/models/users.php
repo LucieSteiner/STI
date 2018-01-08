@@ -95,7 +95,7 @@ function create_user($user, $role, $validity, $password){
     $uppercase = preg_match('/[A-Z]/', $password);
     $lowercase = preg_match('/[a-z]/', $password);
     $number    = preg_match('/\d/', $password);
-    $special   = preg_match('/[^a-zA-Z\d]/', $password)
+    $special   = preg_match('/[^a-zA-Z\d]/', $password);
     $length    = 8;
 
     if(!$uppercase || !$lowercase || !$number || !$special || strlen($password) < $length) {
