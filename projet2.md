@@ -180,13 +180,33 @@ Scénario 6
 
 __Attaque :__ _Brute force d'un compte_
 
-TODO Christophe-Jean, ayant suivi les informations de ces derniers jours, a appris qu'une base de données contant 9GB de mots de passe était disponible sur l'Internet mondial. Bien décidé à avoir l'email de la copine de Jean-Kévin, il décide de tester tous les mots de passe de la base de données sur le compte de Jean-Kévin. 
--> mettre en place un système de blocage ? 
+Christophe-Jean, ayant suivi les informations de ces derniers jours, a appris qu'une base de données contant 9GB de mots de passe était disponible sur l'Internet mondial. Bien décidé à avoir l'email de la copine de Jean-Kévin, il décide de tester tous les mots de passe de la base de données sur le compte de Jean-Kévin. 
 
 __Classification :__ SIE
 
 
-__Contre-mesures__
+__Contre-mesures__ 
+
+Jean-Kévin a aussi eu vent du leak de la base de données. Il décide alors de protéger un peu mieux la page de login. Au lieu de mettre un time-out au bout d'un certain temps, il a l'idée de mettre en place un captcha. Dès que l'utilisateur veut se connecter, il doit remplir un captcha. Après avoir téléchargé une librairie, il ajoute dans la page login les quelques lignes :
+Pour la partie html
+```html
+<div class="form-group">
+	<?php
+		echo Securimage::getCaptchaHtml();
+	?>
+</div>
+``` 
+Et pour la partie php/contrôle 
+```php
+require_once '../captcha/securimage/securimage.php';
+
+/* code */
+
+$image = new Securimage();
+if ($image->check($_POST['captcha_code']) == true)
+
+/* suite du code */
+```
 
 
 Scénario 7A
@@ -194,8 +214,16 @@ Scénario 7A
 
 __Attaque :__ _Vol de session Partie 1_
 
-Jean-Kévin, à la suite d'une rupture difficile, ère sur l'Internet mondial en recherche de réconfort. Christophe-Jean qui souhaite connaître les détails de la rupture, mais qui n'ose pas aller lui parler directement, envoie à Jean-Kévin un lien par mail qui lui promet qu'il va retrouver l'amour dans les deux minutes. Jean-Kévin, convaincu d'un signe du destin, clique sur le lien. Horreur ! Il s'agissait en fait d'une tentative de vol de session ! En effet, en cliquant sur le lien, Jean-Kévin a lancé un script qui récupère le cookie de session (SIE)
--> ajout dans le fichier check_session des deux lignes 
+Jean-Kévin, à la suite d'une rupture difficile, ère sur l'Internet mondial en recherche de réconfort. Christophe-Jean qui souhaite connaître les détails de la rupture, mais qui n'ose pas aller lui parler directement, envoie à Jean-Kévin un lien par mail qui lui promet qu'il va retrouver l'amour dans les deux minutes. Jean-Kévin, convaincu d'un signe du destin, clique sur le lien. Horreur ! Il s'agissait en fait d'une tentative de vol de session ! En effet, en cliquant sur le lien, Jean-Kévin a lancé un script qui récupère le cookie de session. 
+
+
+__Classification :__ SI(E)
+
+Pour ce scénario, le pirate souhaite avant tout endosser l'identité de l'utilisateur courant (S), afin d'accéder à des informations privées (I). Dans le cas où la victime est un administrateur, le pirate peut élever ses privilèges (E).
+
+__Contre-mesures__
+
+Dans le fichier qui vérifie la session courante, on peut ajouter ces quelques lignes, afin de s'assurer, d'une part, que les cookies ne passent que par le protocole HTTP et ne peuvent donc pas être récupéré autrement : 
 ```php
 /* Prevents attacks in order to steal the session ID */
 ini_set('session.cookie_httponly', 1);
@@ -205,10 +233,6 @@ ini_set('session.use_only_cookies', 1);
 ini_set('session.use_strict_mode', 1);
 ```
 
-__Classification :__ SIE
-
-
-__Contre-mesures__
 
 
 Scénario 7B
@@ -216,14 +240,20 @@ Scénario 7B
 
 __Attaque :__ _Vol de session Partie 2_
 
-Jean-Kévin n'est pas satisfait. Bien que les cookies ne transitent plus que par le protocole HTTP, les informations circulent toujours en clair. Pour un attaquant possédant un sniffer de réseau, il est donc très facile d'avoir accès aux informations sensibles. Jean-Kévin décide donc de mettre en place un certificat TLS, afin que toutes son application soit en HTTPS. Pour se faire, il suit à la lettre un tuto qu'il a trouvé en ligne (source : www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7). En quelques étaples, Jean-Kévin, crée une paire de clés publique/privée, un certificat qu'il signe lui-même, et met en place une politique de sécurité dans un fichier de configuration. Il écrit aussi un script qui permet à un utilisateur d'installer ce certificat (conf/ssl/enable-https.sh). Ouf, Jean-Kévin est à présent satisfait.
+Jean-Kévin n'est pas satisfait. Bien que les cookies ne transitent plus que par le protocole HTTP, les informations circulent toujours en clair. Pour un attaquant possédant un sniffer de réseau, il est donc très facile d'avoir accès aux informations sensibles. Jean-Kévin décide donc de mettre en place un certificat TLS, afin que toutes son application soit en HTTPS. 
 
-Note : Le certificat ayant été auto-signé, il est nécessaire de l'autoriser lors de la première connexion au site après l'avoir installé.
 ​
-__Classification :__ SIE
+__Classification :__ SI(E)
+
+Les menaces ciblent ici les mêmes classifications que pour le scénario A.
 
 
 __Contre-mesures__
+
+Afin de passer de http à https, il suit à la lettre un tutoriel qu'il a trouvé en ligne (source : www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7). En quelques étaples, Jean-Kévin, crée une paire de clés publique/privée, un certificat qu'il signe lui-même, et met en place une politique de sécurité dans un fichier de configuration. Il écrit aussi un script qui permet à un utilisateur d'installer ce certificat `conf/ssl/enable-https.sh`. Ouf, Jean-Kévin est à présent satisfait.
+
+_Note_ : Le certificat ayant été auto-signé, il est nécessaire de l'autoriser lors de la première connexion au site après l'avoir installé.  
+
 
 
 Scénario 8
@@ -231,14 +261,23 @@ Scénario 8
 
 __Attaque :__ _Fonction logout_
 
-Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Un pirate prend alors sa place devant l'ordinateur. Il appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Il a désormais accès aux mails de Jean-Kévin ! (SIE)
--> utilisation de session_unset() qui libère toutes les variables de session, session_destroy() qui détruit toutes les variables. Finalement, afin de pouvoir réutiliser à nouveau ses variables de sessions, on appelle la fonction session_start().
+Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Jean-Christophe, qui l'espionnait, prend alors sa place devant l'ordinateur. Il appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Il a désormais accès aux mails de Jean-Kévin ! 
+
+__Classification :__ SI(E)
+
+Dans ce cas, le pirate récupère simplement la session du dernier utilisateur, la fonction logout ne faisant rien, si ce n'est revenir à la page principale. Il peut donc se faire passer pour sa victime (S), lire ses e-mails (I) ou modifier des comptes (E), s'il tombe -par malchance- sur le compte d'un admin. 
 
 
+__Contre-mesures__
 
+Dans la fonction logout, nous avons utilisé les fonctions 
+```php
+session_start();
+session_unset();
+session_destroy();
+```
+Afin de pouvoir réutiliser à nouveau ses variables de sessions, on appelle la fonction session_start(). Ensuite, on utilise la fonction session_unset() qui libère toutes les variables de session et finalement session_destroy() qui détruit toutes les variables. Cela nous permet donc bien de libérer la session et de ne pas pouvoir la récupérer en un simple clic.
 
-## Identification des contre-mesures
-### En fonction des scénarios d’attaques
 
 ## Conclusion
 
