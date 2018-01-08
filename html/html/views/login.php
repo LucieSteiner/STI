@@ -13,10 +13,12 @@ if (!empty ($_POST['login']) and !empty($_POST['password'])){
 	$_SESSION['user'] = $_POST['login'];
 	$_SESSION['role'] = $role;
         header('Location: ../views/messages.php');
-    }else{
+       }else{
         $wrong_cred = 'Wrong credentials!';
+      }
+    }else{
+      $wrong_cred = 'Wrong captcha!';
     }
-  }
 }
 
 ?>
