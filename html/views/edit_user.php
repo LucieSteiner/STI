@@ -5,16 +5,20 @@ include_once('../utils/check_admin.php');
 
 $user = get_user_detail($_GET['user_id']);
 $wrong_password = null;
+$weak_password = null;
 
 if(isset($_POST['role']) and isset($_POST['validity'])){
     if(isset($_POST['password']) and !empty($_POST['password'])){
-        if(isset($_POST['password2']) and ($_POST['password'] == $_POST['password2'])){
-           $password = crypt($_POST['password']);
-           edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
-           header('Location: users.php');
-        }
-        else{
-           $wrong_password = "The two passwords should be identical!";
+      if (!check_password($_POST['password'])) {
+        $weak_password = "Password must be at least 8 characters and contains at least one capital letter, one number and one special character";
+      }
+      if(isset($_POST['password2']) and ($_POST['password'] == $_POST['password2'])){
+         $password = crypt($_POST['password']);
+         edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
+         header('Location: users.php');
+      }
+      else{
+         $wrong_password = "The two passwords should be identical!";
         }
     }
     else{
@@ -51,15 +55,24 @@ if(isset($_POST['role']) and isset($_POST['validity'])){
         <div class="col-12">
 	  <h1><?php echo $user['login'];?></h1>
 	  <hr></hr>
-            <?php if(!is_null($wrong_password)){?>
-	  <div class="row justify-content-center">
-	    <div class="col-md-4">
-	      <div class="alert alert-danger" role="alert">
-		<?php echo $wrong_password; ?>
+    <?php if(!is_null($wrong_password)){?>
+  	  <div class="row justify-content-center">
+	      <div class="col-md-4">
+	        <div class="alert alert-danger" role="alert">
+		        <?php echo $wrong_password; ?>
+	        </div>
 	      </div>
-	    </div>
-          </div>
+       </div>
 	  <?php }?>
+    <?php if(!is_null($weak_password)){?>
+    <div class="row justify-content-center">
+      <div class="col-md-4">
+        <div class="alert alert-danger" role="alert">
+          <?php echo $weak_password; ?>
+        </div>
+      </div>
+    </div>
+    <?php }?>
 	    <div class="row justify-content-center">
 	    <div class="col-md-4">
 	      <div class="card">
