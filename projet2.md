@@ -182,12 +182,14 @@ __Attaque :__ _Brute force d'un compte_
 
 Christophe-Jean, ayant suivi les informations de ces derniers jours, a appris qu'une base de données contant 9GB de mots de passe était disponible sur l'Internet mondial. Bien décidé à avoir l'email de la copine de Jean-Kévin, il décide de tester tous les mots de passe de la base de données sur le compte de Jean-Kévin. 
 
-__Classification :__ SIE
+__Classification :__ (S)I(E)  
+
+Ici, le pirate cherche à obtenir un maximum d'informations sensibles (I) sur le maximum d'utilisateurs. Dans le cas où il arriverait à ses fins, il peut voler des identités (S) ou alors, s'il s'agit du compte d'un admin, élever ses privilèges (E).
 
 
 __Contre-mesures__ 
 
-Jean-Kévin a aussi eu vent du leak de la base de données. Il décide alors de protéger un peu mieux la page de login. Au lieu de mettre un time-out au bout d'un certain temps, il a l'idée de mettre en place un captcha. Dès que l'utilisateur veut se connecter, il doit remplir un captcha. Après avoir téléchargé une librairie, il ajoute dans la page login les quelques lignes :
+Jean-Kévin a aussi eu vent du leak de la base de données. Il décide alors de protéger un peu mieux la page de login. Au lieu de mettre un time-out au bout d'un certain temps, il a l'idée de mettre en place un captcha. Dès que l'utilisateur veut se connecter, il doit remplir un captcha. Après avoir téléchargé une librairie (source : https://github.com/dapphp/securimage), il ajoute dans la page login les quelques lignes :
 Pour la partie html
 ```html
 <div class="form-group">
