@@ -11,12 +11,13 @@ function authentify_user($login, $password){
     $data = $result->fetchAll();
     if(!empty($data)){   
         foreach($data as $row){
-            $password_hash = $row['password'];
+        $password_hash = $row['password'];
 	    $validity = $row['validity'];
 	    $role = $row['role'];
         }
 	if($validity === 1){
-            if(hash_equals($password_hash, crypt($password, $password_hash))) {
+            $salt = crypt($password);
+            if(hash_equals($password_hash, crypt($password, $salt))) {
                 return $role;
             }
         }
