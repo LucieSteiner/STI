@@ -28,12 +28,13 @@
  		    FOREIGN KEY(sender) REFERENCES users(id),
 		    FOREIGN KEY(receiver) REFERENCES users(id) )");
 
+    $salt = crypt('admin');
     $admin = array('login' => 'admin',
-                   'password' => crypt('admin'),
+                   'password' => crypt('admin', $salt),
                    'validity' => 1,
 		               'role' => 'admin');
 
-    $file_db->exec("INSERT INTO users (login, role, validity, password, salt) VALUES ('{$admin['login']}','{$admin['role']}','{$admin['validity']}','{$admin['password']}')");
+    $file_db->exec("INSERT INTO users (login, role, validity, password) VALUES ('{$admin['login']}','{$admin['role']}','{$admin['validity']}','{$admin['password']}')");
 
  
     $file_db = null;

@@ -13,7 +13,8 @@ if(isset($_POST['login']) and isset($_POST['role']) and isset($_POST['validity']
   if ($_POST['password'] != $_POST['password2']){
 	 $wrong_password = "The two passwords should be identical!";
     }else{
-    $result = create_user($_POST['login'], $_POST['role'], $_POST['validity'], crypt($_POST['password']));
+    $salt = crypt($_POST['password']);
+    $result = create_user($_POST['login'], $_POST['role'], $_POST['validity'], crypt($_POST['password']), $salt);
     if(!$result){
 	$wrong_login = "This login already exists!";
     }
