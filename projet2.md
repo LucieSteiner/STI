@@ -22,20 +22,25 @@ Dans le cadre de ce deuxième projet, nous devons sécuriser cette application. 
 
 ## Description du système
 
+Un utilisateur a un rôle défini lors de sa création ; il peut être administrateur ou collaborateur. Tous les deux ont accès à leur boîte mail respectives. Il peut gérer ses messages, c'est-à-dire, les supprimer ou en créer des nouveaux. L'utilisateur a aussi accès à son profil, où il peut changer de mot de passe. Ces fonctionnalités sont celles de bases. Un administrateur peut, en plus, créer, éditer ou supprimer des comptes, changer les rôles des autres utilisateurs, changer leur statuts (actif, inactif) et leur mot de passe.  
+Un aspect sécuritaire a été pris en compte durant le développement de la phase une. Afin d'assurer un bon fonctionnement de l'application, les pages qui nécessitent une authentification ne sont accessibles qu'aux personnes authentifiées ; les autres sont redirigés sur la page de login. De plus, un simple utilisateur authentifié n'a pas accès aux pages d'administration. 
+
 ### DFD
 
 TODO
 
 ## Identification des biens
 
-- application
-- serveur ? 
-- informations des utilisateurs 
-- messages 
+Dans notre application, les données sensibles qu'il est nécessaire de protéger sont les informations utilisateurs (nom et mot de passe), ainsi que les messages échangés. Un attaquant peut vouloir voler ses informations pour diverses raisons, explicitées plus bas dans ce rapport. L'accès à la base de données doit donc être protégée. Le serveur, qui héberge l'application, est aussi un bien sensible.
+
 
 ## Définition du périmètre de sécurisation
 
-Un des risques encourus par toute application est une attaque de type déni de service. Il est en effet possible pour un attaquant d'inonder le serveur de requêtes afin de le rendre inapte. Il existe diverses possibilités pour s'en prémunir, ou en tout cas dissuader l'attaquant, comme par exmple bloquer les adresses IP qui font trop de requêtes dans un court laps de temps. Cependant, un attaquant peut contourner cette mesure en utilisant des proxys, ou simplement plusieurs machines. La question du déni de service étant vaste et complexe et l'application n'étant pour le moment hébergée que sur un ordinateur en localhost, nous ne l'avons pas pris en compte dans le cadre de ce projet. 
+Le scénario le plus plausible dans le cadre de cette application est un attaquant, ayant accès au service de messagerie, tente de trouver des failles afin de faire dysfonctionner le système selon ses désirs. Il s'agit donc avant tout de sécuriser le côté client, notamment de contrôler attentivement les formulaires auxquels un utilisateur a accès. Il s'agit ici d'attaques actives, ou le hacker essaye de prendre le contrôle de l'application.  
+
+On peut aussi imaginer que le hacker effectue des écoutes passives. Il faut donc aussi penser à sécuriser la transmission de données.  
+
+Un des risques encourus par toute application est une attaque de type déni de service. Il est en effet possible pour un attaquant d'inonder le serveur de requêtes afin de le rendre inapte. Il existe diverses possibilités pour s'en prémunir, ou en tout cas dissuader l'attaquant, comme par exemple bloquer les adresses IP qui font trop de requêtes dans un court laps de temps. Cependant, un attaquant peut contourner cette mesure en utilisant des proxys, ou simplement plusieurs machines. La question du déni de service étant vaste et complexe et l'application n'étant pour le moment hébergée que sur un ordinateur en localhost, nous ne l'avons pas pris en compte dans le cadre de ce projet. 
 
 
 ## Identification des sources de menaces
@@ -100,7 +105,7 @@ Scénario 2
 __Attaque :__ _Hachage de mots de passe_
 
 TODO 
-Jean-Kévin le sait, un mot de passe, c'est important. Surtout si un utilisateur l'utilise pour plusieurs application. C'est pourquoi Jean-Kévin a stocké le mot de passe haché dans la base de donnée. Ainsi, si la base de donnée est volée, les mots de passe ne sont pas dévoilés.
+Jean-Kévin le sait, un mot de passe, c'est important. Surtout si un utilisateur l'utilise pour plusieurs applications. C'est pourquoi Jean-Kévin a stocké le mot de passe haché dans la base de données. Ainsi, si la base de données est volée, les mots de passe ne sont pas dévoilés.
 -> ajouter un sel ??
 
 __Classification :__
@@ -121,8 +126,8 @@ Comme expliqué dans l'attaque, il est possible d'obtenir des informations sur l
 
 __Contre-mesures__
 
-Jean-Kévin n'est pas né de la dernière pluie et, pour ne pas dévoiler plus d'informaitons que nécessaire, il a fait deux changements dans le code : 
-- Tout d'abord, il a ajouté un fichier `index.php` dans chaque dossier pour éviter de révéler l'arboresence de l'application. Dans ce fichier, l'utilisateur est automatiquement redirigé sur la page de login. 
+Jean-Kévin n'est pas né de la dernière pluie et, pour ne pas dévoiler plus d'informations que nécessaire, il a fait deux changements dans le code : 
+- Tout d'abord, il a ajouté un fichier `index.php` dans chaque dossier pour éviter de révéler l'arborescence de l'application. Dans ce fichier, l'utilisateur est automatiquement redirigé sur la page de login. 
 - De plus, il a modifié le fichier `httpd.conf` comme suit :
 ```
 ErrorDocument 404 http://localhost
@@ -135,7 +140,7 @@ Scénario 4
 
 __Attaque :__ _Information sur le serveur_
 
-Jean-Kévin, effectuant quelques tests sur son application, se rend compte que - horreur ! - la version du serveur qu'il utilise est visible en clair par tous. Cette information étant compromettante, il décide de remédier à ça. En effet, il suffit d'entrer la version du serveur sur l'Internet mondial pour y trouver toutes les failles répértoriées. 
+Jean-Kévin, effectuant quelques tests sur son application, se rend compte que - horreur ! - la version du serveur qu'il utilise est visible en clair par tous. Cette information étant compromettante, il décide de remédier à ça. En effet, il suffit d'entrer la version du serveur sur l'Internet mondial pour y trouver toutes les failles répertoriées. 
 
 __Classification :__ STRIDE
 
@@ -148,7 +153,7 @@ Jean-Kévin a modifié le fichier de configuration `/etc/httpd/conf/httpd.conf`,
 ServerTokens Prod
 ServerSignature Off
 ```
-Afin de cacher les informations sur le seveur. 
+Afin de cacher les informations sur le serveur. 
 
 
 Scénario 5
@@ -250,7 +255,7 @@ __Attaque :__ _Vol de session Partie 2_
 
 Jean-Kévin n'est pas satisfait. Bien que les cookies ne transitent plus que par le protocole HTTP, les informations circulent toujours en clair. Pour un attaquant possédant un sniffer de réseau, il est donc très facile d'avoir accès aux informations sensibles. Jean-Kévin décide donc de mettre en place un certificat TLS, afin que toutes son application soit en HTTPS. 
 
-​
+
 __Classification :__ SI(E)
 
 Les menaces ciblent ici les mêmes classifications que pour le scénario A.
@@ -258,7 +263,7 @@ Les menaces ciblent ici les mêmes classifications que pour le scénario A.
 
 __Contre-mesures__
 
-Afin de passer de http à https, il suit à la lettre un tutoriel qu'il a trouvé en ligne (source : www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7). En quelques étaples, Jean-Kévin, crée une paire de clés publique/privée, un certificat qu'il signe lui-même, et met en place une politique de sécurité dans un fichier de configuration. Il écrit aussi un script qui permet à un utilisateur d'installer ce certificat `conf/ssl/enable-https.sh`. Ouf, Jean-Kévin est à présent satisfait.
+Afin de passer de http à https, il suit à la lettre un tutoriel qu'il a trouvé en ligne (source : www.digitalocean.com/community/tutorials/how-to-create-an-ssl-certificate-on-apache-for-centos-7). En quelques étapes, Jean-Kévin, crée une paire de clés publique/privée, un certificat qu'il signe lui-même, et met en place une politique de sécurité dans un fichier de configuration. Il écrit aussi un script qui permet à un utilisateur d'installer ce certificat `conf/ssl/enable-https.sh`. Ouf, Jean-Kévin est à présent satisfait.
 
 _Note_ : Le certificat ayant été auto-signé, il est nécessaire de l'autoriser lors de la première connexion au site après l'avoir installé.  
 
@@ -304,4 +309,4 @@ $_SESSION['LAST_ACTIVITY'] = time();
 
 ## Conclusion
 
-En effectuant des recherches afin de sécuriser notre application, nous avons remarqué que certaines manipulations avaient déjà été effectuées. Cela est dû au fait que lorsque nous avons fait des recherches pour implémenter telle ou telle fonction, le standard utilisé était (souvent) celui qui était le mieux sécurisé. C'est une bonne nouvelle et cela montre que même si on y prête pas trop attention, quelques mesures de sécurités sont mises en place de base. 
+En effectuant des recherches afin de sécuriser notre application, nous avons remarqué que certaines manipulations avaient déjà été effectuées. Cela est dû au fait que lorsque nous avons fait des recherches pour implémenter telle ou telle fonction, le standard utilisé était (souvent) celui qui était le mieux sécurisé. C'est une bonne nouvelle et cela montre que même si on y prête pas trop attention, quelques mesures de sécurités sont mises en place de base.

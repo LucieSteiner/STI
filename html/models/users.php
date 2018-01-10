@@ -15,8 +15,8 @@ function authentify_user($login, $password){
 	    $validity = $row['validity'];
 	    $role = $row['role'];
         }
-	if($validity == 1){
-            if($password_hash == crypt($password, $password_hash)){
+	if($validity === 1){
+            if(hash_equals($password_hash, crypt($password, $password_hash))) {
                 return $role;
             }
         }
@@ -30,7 +30,8 @@ function change_user_password($user, $old, $new){
     $file_db = connect();
     
         if(!is_null(authentify_user($user, $old))){
-	    $password = crypt($new);
+        $hash = crypt($new);
+	    $password = crypt($new, $hash);
 	    
 	    $result = $file_db->prepare("UPDATE users SET password = ?  WHERE login = ?");
 	    $result->execute(array($password, $user));
