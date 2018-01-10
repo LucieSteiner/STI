@@ -16,8 +16,7 @@ function authentify_user($login, $password){
 	    $role = $row['role'];
         }
 	if($validity == 1){
-            $salt = getenv('WEBSITE_SALT');
-            if($password_hash == crypt($password, $salt)) {
+            if($password_hash == crypt($password, '$1$abcdefgh$')) {
                 return $role;
             }
         }
@@ -31,8 +30,7 @@ function change_user_password($user, $old, $new){
     $file_db = connect();
     
         if(!is_null(authentify_user($user, $old))){
-        $hash = getenv('WEBSITE_SALT');
-	    $password = crypt($new, $hash);
+	    $password = crypt($new, '$1$abcdefgh$');
 	    
 	    $result = $file_db->prepare("UPDATE users SET password = ?  WHERE login = ?");
 	    $result->execute(array($password, $user));
