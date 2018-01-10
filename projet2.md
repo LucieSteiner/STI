@@ -7,6 +7,12 @@ __Yosra Harbaoui & Luana Martelli__
 ---
 
 
+TODO : - add implémentation fonctionnelle  
+       - problèmes rencontrés
+       - déjà mis en place : page protégée selon role
+
+
+
 ## Introduction
 
 Dans le premier projet, il a été question de développer une application de messagerie. Le cahier des charges consistait à mettre en place une interface web permettant à un client (utilisateur ou administrateur) qui pouvait se connecter à sa messagerie. Il pouvait envoyer des messages, respectivement en recevoir, et éditer son profil. Si le client était administrateur, alors il pouvait aussi avoir accès à la liste des utilisateurs. 
@@ -265,6 +271,9 @@ __Attaque :__ _Fonction logout_
 
 Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Jean-Christophe, qui l'espionnait, prend alors sa place devant l'ordinateur. Il appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Il a désormais accès aux mails de Jean-Kévin ! 
 
+
+__Scénario alternatif__ : Jean-Kévin part sans en oubliant de se déconnecter - Horreur x2 ! -. Jean-Christophe arrive cinq minutes après et a accès à tous ses e-mails !  
+
 __Classification :__ SI(E)
 
 Dans ce cas, le pirate récupère simplement la session du dernier utilisateur, la fonction logout ne faisant rien, si ce n'est revenir à la page principale. Il peut donc se faire passer pour sa victime (S), lire ses e-mails (I) ou modifier des comptes (E), s'il tombe -par malchance- sur le compte d'un admin. 
@@ -278,7 +287,19 @@ session_start();
 session_unset();
 session_destroy();
 ```
-Afin de pouvoir réutiliser à nouveau ses variables de sessions, on appelle la fonction session_start(). Ensuite, on utilise la fonction session_unset() qui libère toutes les variables de session et finalement session_destroy() qui détruit toutes les variables. Cela nous permet donc bien de libérer la session et de ne pas pouvoir la récupérer en un simple clic.
+Afin de pouvoir réutiliser à nouveau ses variables de sessions, on appelle la fonction session_start(). Ensuite, on utilise la fonction session_unset() qui libère toutes les variables de session et finalement session_destroy() qui détruit toutes les variables. Cela nous permet donc bien de libérer la session et de ne pas pouvoir la récupérer en un simple clic.  
+Afin de ne pas se retrouver dans le cas du scénario alternatif, nous avons ajouté dans le fichier `check_session.php` un time-out. Si une session reste inactive plus de cinq minutes, la session est détruite. 
+```php
+if (isset($_SESSION['LAST_ACTIVITY']))
+	if((time() - $_SESSION['LAST_ACTIVITY']) > 60) {
+		session_start();
+    	session_unset();
+    	session_destroy();
+    	header('Location: ./index.php'); 
+  	}
+}
+$_SESSION['LAST_ACTIVITY'] = time();
+```
 
 
 ## Conclusion

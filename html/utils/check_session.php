@@ -11,6 +11,16 @@ ini_set('session.use_strict_mode', 1);
 
 if(!isset($_SESSION['user'])){
     header('Location:../views/login.php');
+} else {
+	if (isset($_SESSION['LAST_ACTIVITY']))
+		if((time() - $_SESSION['LAST_ACTIVITY']) > 60) {
+			session_start();
+	    	session_unset();
+	    	session_destroy();
+	    	header('Location: ./index.php'); 
+      	}
+   }
+  $_SESSION['LAST_ACTIVITY'] = time();
 }
 
 ?>
