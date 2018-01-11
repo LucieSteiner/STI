@@ -4,9 +4,11 @@
 include_once('../utils/db.php');
 
 function authentify_user($login, $password){
+    $loginSec = htmlspecialchars($login, ENT_SUBSTITUTE);
+
     $file_db = connect();
     $result = $file_db->prepare('SELECT login, password, validity, role FROM users WHERE login = ?');  
-    $result->execute(array($login));
+    $result->execute(array($loginSec));
    
     $data = $result->fetchAll();
     if(!empty($data)){   

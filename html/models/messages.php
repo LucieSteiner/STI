@@ -43,7 +43,7 @@ function write_message($from, $to, $title, $message){
         return false;
     }
     $result2 = $file_db->prepare("INSERT INTO messages (title, time, message, sender, receiver) VALUES (?,?,?,?,?)");
-    $result2->execute(array($title, $formatted_time, $message, $sender['id'], $receiver['id']));
+    $result2->execute(array($titleSec, $formatted_time, $messageSec, $sender['id'], $receiver['id']));
 
     close();
     return true;
