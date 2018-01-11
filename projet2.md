@@ -38,7 +38,7 @@
 %----------------------------------------------------------------------------------------
 
 \HRule \\[0.4cm]
-{ \huge \bfseries Messagerie sécurisée}\\[0.4cm] % Title of your document
+{ \huge \bfseries Messagerie électronique sécurisée}\\[0.4cm] % Title of your document
 \HRule \\[1.5cm]
  
 %----------------------------------------------------------------------------------------
@@ -48,16 +48,16 @@
 \begin{minipage}{0.4\textwidth}
 \begin{flushleft} \large
 \emph{Auteurs:}\\
-Yosra \textsc{Harbaoui} % Your name
-Luana \textsc{Martelli} % Your name
+Yosra \textsc{Harbaoui} \\
+Luana \textsc{Martelli} 
 \end{flushleft}
 \end{minipage}
 ~
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
 \emph{Professeurs:} \\
-Abraham \textsc{Rubinstein} % Supervisor's Name
-Yohan \textsc{Martini} % Supervisor's Name
+Abraham \textsc{Rubinstein} \\
+Yohan \textsc{Martini} 
 \end{flushright}
 \end{minipage}\\[2cm]
 
@@ -93,17 +93,48 @@ Dans le premier projet, il a été question de développer une application de me
 
 Dans le cadre de ce deuxième projet, nous devons sécuriser cette application. L'aspect sécuritaire a été volontairement mise de côté lors de l'implémentation du programme. Ici, il s'agit d'identifier les menaces, de décrire des scénarios et finalement d'implémenter des contre-mesures, afin de rendre notre application utilisable et sécurisée.
 
+De plus, les requêtes SQL à la base de données employaient déjà des méthodes sécurisées. Les injections SQL faisant partie de la grande famille des attaques contre une application web, nous lui avons tout de même attribué un scénario. 
+
+
+\section{Environnement}
+
+L'application côté serveur est codée en PHP version 5.4. La base de donnée utilise la technologie SQLite. Cette application a été testée sur une machine virtuel CentOs 7.1.
+
 
 \section{Description du système}
 
-Un utilisateur a un rôle défini lors de sa création ; il peut être administrateur ou collaborateur. Tous les deux ont accès à leur boîte mail respectives. Il peut gérer ses messages, c'est-à-dire, les supprimer ou en créer des nouveaux. L'utilisateur a aussi accès à son profil, où il peut changer de mot de passe. Ces fonctionnalités sont celles de bases. Un administrateur peut, en plus, créer, éditer ou supprimer des comptes, changer les rôles des autres utilisateurs, changer leur statuts (actif, inactif) et leur mot de passe.  
+\subsection{Prérequis}
+
+Selon le cahier des charges du premier projet, quelques prérequis étaient à mettre en place : 
+\begin{itemize}
+\item sans authentification, seule la page de login est accessible\item mise en place d'un méchanisme d'authentification simple (nom d'utilisateur et mot de passe)
+\item un utilisateur peut être administrateur ou collaborateur 
+\item un compte peut être actif ou inactif. S'il est inactif, alors l'utilisateur n'a pas accès à son compte
+\item un collaborateur peut changer son mot de passe et consulter ses messages. Il peut en créer ou en supprimer 
+\item un administrateur a les mêmes fonctionnalités qu'un collaborateur. En plus, il a accès à la liste des utilisateurs et peut modifier l'état des comptes
+\end{itemize}
+  
+\subsection{Sécurité}
 
 Un aspect sécuritaire a été pris en compte durant le développement de la phase une. Afin d'assurer un bon fonctionnement de l'application, les pages qui nécessitent une authentification ne sont accessibles qu'aux personnes authentifiées ; les autres sont redirigés sur la page de login. De plus, un simple utilisateur authentifié n'a pas accès aux pages d'administration. 
 
+Enfin, les accès à la base de données étaient déjà sécurisés, car ils utilisaient déjà les fonctions approuvées par la documentation. Cependant, les injections SQL sont une des menaces les plus connues dans les attaques d'application web. C'est pourquoi nous lui avons quand même consacré un scénario.   
 
-\subsection{DFD}
+\newpage
 
-TODO
+\subsection{Data Flow Diagrams}
+
+Notre application est conçue comme suit : 
+un utilisateur ou un administrateur a accès à des pages, selon ses accréditations. Toutes les requêtes se font via l'interface web. Dans l'exemple ci-dessous, on suppore que les deux sont loggués correctement. 
+
+Toutes les demandes sont effectuées sous forme de fonctions. Toutes ces fonctions sont recensées dans des modèles (deux exactement : user et message). Ce sont ces modèles qui effectuent les requêtes auprès de la base de données. 
+
+La base de données renvoie les informations correspondantes et l'application web les affiche. 
+\begin{center}
+\includegraphics[width=70mm]{dfd.png}
+\end{center}
+
+\newpage
 
 \subsection{Identification des biens}
 
@@ -132,12 +163,21 @@ Un des risques encourus par toute application est une attaque de type déni de s
 \item un programme malveillant \\
   La différence entre le pirate et le programme est que, afin d'empêcher le pirate d'agir, on va essayer de le forcer à s'authentifier, afin de restreindre ses droits en conséquence. Ainsi, il ne sera pas en muse d'accéder à l'application. Le programme lui, ne passe pas par la case authentification. Il s'agit donc ici de contrôler les injections de code, ou les requêtes suspicieuses et de bloquer les programmes non-reconnus par l'application. 
 \item une menace physique \\
-  Sous-entendu, une catastrophe naturelle, un sinistre, comme un incendie ou une inondation qui endommagerait le matériel qui contient l'application. À noter que ce type de menaces n'est pas pris en compte dans le présent rapport. Nous avons effectué des sauvegardes régulières de l'application, s'il devait se produire une catastrophe et que l'application n'est plus accessible, merci de nous contacter afin que nous vous fournissions les codes sources. 
+  Sous-entendu, une catastrophe naturelle, un sinistre, comme un incendie ou une inondation qui endommagerait le matériel qui contient l'application. 
+  
+  À noter que ce type de menaces n'est pas pris en compte dans le présent rapport. Nous avons effectué des sauvegardes régulières de l'application, s'il devait se produire une catastrophe et que l'application n'est plus accessible, merci de nous contacter afin que nous vous fournissions les codes sources. 
 \end{itemize} 
 
 \subsection{Eléments du système attaqué}
 
-TODO 
+Les principaux points faibles de l'application sont tous les champs utilisateurs. En effet, s'ils ne sont pas protégés, un attaquant peut les utiliser pour obtenir des informations, en ajouter, les modifier ou les supprimer. Ils sont ce qui relie l'utilisateur à la base de données. C'est pourquoi il faut amener une attention pariculières à ces champs. 
+
+Un attaquant peut aussi écouter passivement le réseau et aquérir des informations de cette manière. Les communications entre le serveur et le client se font via un réseau, il est donc aussi ciblé. 
+
+Le serveur peut aussi se faire physiquement attaqué. Il faut donc mettre en place un système de backups réguliers. Cette éventualité ne rentre pas dans le cadre du projet, mais c'est un élément à ne pas négliger pour une amélioration future. 
+
+Finalement, un attaquant pourrait effectuer du social engineering sur un utilisateur afin d'obtenir des données. Cette attaque ne rentre pas non plus dans le cadre du projet, mais dans un cas réél, il faudrait sensibiliser les utilisateurs à ce fait. 
+
 
 \subsection{Motivations}
 
@@ -240,8 +280,8 @@ ServerTokens Prod
 ServerSignature Off
 \end{lstlisting}
 Afin de cacher les informations sur le serveur.  
-ServerToken notifie le niveau d'informations que le server va transmettre dans l'entête HTTP. Dans notre cas, Prod, fournit juste le nom du serveur, qui est l'information minimale. Par défaut, toutes les informations sont affichées.  
-ServerSignature, s'il est activé, note une ligne en bas de l'application contenant le serveur et sa version. Par défaut, cette option est désactivée, mais il est plus sage et plus lisible de l'écrire ici. 
+$ServerToken$ notifie le niveau d'informations que le server va transmettre dans l'entête HTTP. Dans notre cas, Prod, fournit juste le nom du serveur, qui est l'information minimale. Par défaut, toutes les informations sont affichées.  
+$ServerSignature$, s'il est activé, note une ligne en bas de l'application contenant le serveur et sa version. Par défaut, cette option est désactivée, mais il est plus sage et plus lisible de l'écrire ici. 
 
 
 \subsubsection*{Scénario 5 - \textit{Injections SQL}}
@@ -273,11 +313,11 @@ Ensuite, dans la fonction $authentify\_user()$ du fichier user, Jean-Kévin a ut
 
 Dans la même idée que le scénario précédent, il est possible d'injecter du code et de l'exécuter dans les entrées utilisateurs. Dans l'application de la partie 1, il était possible de faire cela :  
 \begin{center}
-\includegraphics[width=65mm]{xss1.PNG}
+\includegraphics[width=60mm]{xss1.PNG}
 \end{center}
 Ecriture d'un nouveau message avec injection de code PHP.  
 \begin{center}
-\includegraphics[width=65mm]{xss2.PNG}
+\includegraphics[width=60mm]{xss2.PNG}
 \end{center}
 Lorsque l'on veut lire le message, le corps est vide. On voit donc que le code a été exécuté.
 \\ \\
@@ -289,11 +329,11 @@ Puisque dans ce scénario, Mallory exécute le code qu'elle souhaite, elle peut 
 
 Jean-Kévin a utilisé la fonction $htmlspecialchars()$ qui transforme les caractères spéciaux (comme les <>) en caractères normaux. Ils deviennent donc non-exécutable. L'attaque mentionnée ci-dessous devient donc irréalisable :  
 \begin{center}
-\includegraphics[width=65mm]{xss3.PNG}
+\includegraphics[width=60mm]{xss3.PNG}
 \end{center}
 Le message et maintenant visible : 
 \begin{center}
-\includegraphics[width=65mm]{xss4.PNG}
+\includegraphics[width=60mm]{xss4.PNG}
 \end{center}
 
 
@@ -313,9 +353,9 @@ Jean-Kévin a aussi eu vent des plans de Mallory. Il décide alors de protéger 
 Pour la partie html
 \begin{lstlisting}[language=html]
 <div class="form-group">
-	<?php
-		echo Securimage::getCaptchaHtml();
-	?>
+  <?php
+    echo Securimage::getCaptchaHtml();
+  ?>
 </div>
 \end{lstlisting} 
 Et pour la partie php/contrôle 
@@ -334,7 +374,7 @@ if ($image->check($_POST['captcha_code']) == true)
 
 \textbf{Attaque} 
 
-TODO Jean-Kévin, à la suite d'une rupture difficile, ère sur l'Internet mondial en recherche de réconfort. Christophe-Jean qui souhaite connaître les détails de la rupture, mais qui n'ose pas aller lui parler directement, envoie à Jean-Kévin un lien par mail qui lui promet qu'il va retrouver l'amour dans les deux minutes. Jean-Kévin, convaincu d'un signe du destin, clique sur le lien. Horreur ! Il s'agissait en fait d'une tentative de vol de session ! En effet, en cliquant sur le lien, Jean-Kévin a lancé un script qui récupère le cookie de session. 
+Un vol de session est possible de plusieurs manière. Mallory peut écouter passivement le réseau et tenter d'intercepter un ID session. Ainsi, elle pourra le réinjecter et accéder aux données de Jean-Kévin. Une autre manière est d'écrire un script qui récupère cet ID et le renvoie à l'attaquant. Dans ce scénario, il s'agit de protégé avant tout l'ID de la session, afin qu'il ne soit pas récupérable facilement. 
 \\ \\
 \textbf{Classification :} SI(E)
 
@@ -374,9 +414,9 @@ Afin de passer de http à https, il suit à la lettre un tutoriel qu'il a trouv�
 
 \textbf{Attaque} 
 
-Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Jean-Christophe, qui l'espionnait, prend alors sa place devant l'ordinateur. Il appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Il a désormais accès aux mails de Jean-Kévin ! 
+Jean-Kévin aime bien lire ses mails dans un cybercafé avant de partir au travail. Son café terminé, il se déconnecte de sa session et part, en pensant que son compte est désormais inaccessible. Erreur ! Mallory, qui l'espionnait, prend alors sa place devant l'ordinateur. Elle appuie sur le bouton "retour arrière" du navigateur web. Horreur ! Elle a désormais accès aux mails de Jean-Kévin ! 
 \\ \\
-\textbf{Scénario alternatif :} Jean-Kévin part sans en oubliant de se déconnecter - Horreur x2 ! -. Jean-Christophe arrive cinq minutes après et a accès à tous ses e-mails !  
+\textbf{Scénario alternatif :} Jean-Kévin part sans en oubliant de se déconnecter - Horreur x2 ! -. Mallory arrive cinq minutes après et a accès à tous ses e-mails !  
 \\ \\
 \textbf{Classification : }SI(E)
 
@@ -384,7 +424,7 @@ Dans ce cas, le pirate récupère simplement la session du dernier utilisateur, 
 \\ \\
 \textbf{Contre-mesures}
 
-Dans la fonction logout, nous avons utilisé les fonctions 
+Dans la fonction logout, Jean-Kévin a utilisé les fonctions suivantes
 \begin{lstlisting}[language=php]
 session_start();
 session_unset();
@@ -404,9 +444,25 @@ if (isset($_SESSION['LAST_ACTIVITY']))
 $_SESSION['LAST_ACTIVITY'] = time();
 \end{lstlisting}
 
+\subsection{Dans le futur}
+
+Cette sous-section présente un scénario qui n'a pas été implémenté dans le projet. Cependant, il nous semblait important de le présenter ici, pour une implémentation future.
+
 \subsubsection*{Scénario 10 - \textit{PGP}}
-non répudiation des messages ? 
-possible de faire une signature pour chaque user? ?
+
+\textbf{Attaque}
+
+Dans le cas où attaquant aurait accès à la base de données, il aurait accès à tous les messages en clair. De plus, l'intégrité des messages n'est pour le moment pas assuré. 
+\\ \\
+\textbf{Classification :} I
+
+Ici, les données sensibles sont la cible de cette attaque. 
+\\ \\
+\textbf{Contre-mesures}
+
+Il faudrait mettre en place un système qui permet à la fois d'assurer la confidentialité, l'intégrité et l'autentification des messages et de leur auteur. Un bon moyen est le système Pretty Good Privacy. Il s'agit de générer deux paires de clés qui vont permettre, respectivement, de chiffrer les données et de les signer. Ainsi, en cas de vol de base de données, elles restent protégées. 
+
+Il existe des outils qui implémentent un service PGP pour PHP. La documentation est cependant un peu barbare.
 
 \newpage
 
@@ -420,31 +476,7 @@ Ce qui a pris le plus de temps à été de définir avec précision le périmèt
 
 En effectuant des recherches afin de sécuriser notre application, nous avons remarqué que certaines manipulations avaient déjà été effectuées. Cela est dû au fait que lorsque nous avons fait des recherches pour implémenter telle ou telle fonction, le standard utilisé était (souvent) celui qui était le mieux sécurisé. C'est une bonne nouvelle et cela montre que même si on y prête pas trop attention, quelques mesures de sécurités sont mises en place de base.
 
+Ce deuxième projet a été très sympa à réaliser et nous a montré le genre de réfléxion à avoir lorsque l'on dévloppe une application web. 
+
 
 \end{document}
-
-
-Les principaux points faibles de l'application sont tous les champs utilisateurs. En effet, s'ils ne sont pas protégés, un attaquant peut les utiliser pour obtenir des informations, en ajouter, les modifier ou les supprimer. Ils sont ce qui relie l'utilisateur à la base de données. C'est pourquoi il faut amener une attention pariculières à ces champs. 
-
-Un attaquant peut aussi écouter passivement le réseau et aquérir des informations de cette manière. Les communications entre le serveur et le client se font via un réseau, il est donc aussi ciblé. 
-
-Le serveur peut aussi se faire physiquement attaqué. Cette éventualité ne rentre pas dans le cadre du projet, mais c'est un élément à ne pas négliger pour une amélioration future. 
-
-Finalement, un attaquant pourrait effectuer du social engeneering sur un utilisateur afin d'obtenir des données. Cette attaque ne rentre pas non plus dans le cadre du projet, mais dans un cas réél, il faudrait sensibiliser les utilisateurs à ce fait. 
-
-
----
-
-Attention à remplacer tous les noms par Mallory
-
---- 
-
-Un vol de session est possible de plusieurs manière. Mallory peut écouter passivement le réseau et tenter d'intercepter un ID session. Ainsi, elle pourra le réinjecter et accéder aux données de Jean-Kévin. Une autre manière est d'écrire un script qui récupère cet ID et le renvoie à l'attaquant. Dans ce scénario, il s'agit de protégé avant tout l'ID de la session, afin qu'il ne soit pas récupérable facilement. 
-
----
-
-De plus, les requêtes SQL à la base de données employaient déjà des méthodes sécurisées. Les injections SQL faisant partie de la grande famille des attaques contre une application web, nous lui avons tout de même attribué un scénario. 
-
----
-
-Ce deuxième projet a été très sympa à réaliser et nous a montré le genre de réfléxion à avoir lorsque l'on dévloppe une application web. 

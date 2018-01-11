@@ -1,7 +1,6 @@
 <?php
 
 include_once('../utils/db.php');
-include_once('../utils/pgp.php');
 
 function get_messages($user){
     $file_db = connect();
@@ -32,8 +31,6 @@ function write_message($from, $to, $title, $message){
     $titleSec = htmlspecialchars($title, ENT_SUBSTITUTE);
     $messageSec = htmlspecialchars($message, ENT_SUBSTITUTE);
 
-    $msg = $gpg -> encrypt($messageSec);
-
     $file_db = connect();
     date_default_timezone_set('UTC');
     $formatted_time = date('Y-m-d H:i:s', time());
@@ -46,7 +43,7 @@ function write_message($from, $to, $title, $message){
         return false;
     }
     $result2 = $file_db->prepare("INSERT INTO messages (title, time, message, sender, receiver) VALUES (?,?,?,?,?)");
-    $result2->execute(array($titleSec, $formatted_time, $msg, $sender['id'], $receiver['id']));
+    $result2->execute(array($titleSec, $formatted_time, $messageSec, $sender['id'], $receiver['id']));
 
     close();
     return true;
