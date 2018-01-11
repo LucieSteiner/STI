@@ -13,7 +13,7 @@ if(isset($_POST['role']) and isset($_POST['validity'])){
         $weak_password = "Password must be at least 8 characters and contains at least one capital letter, one number and one special character";
       }
       if(isset($_POST['password2']) and ($_POST['password'] == $_POST['password2'])){
-         $password = crypt($_POST['password'], '$1$abcdefgh$');
+         $password = crypt($_POST['password']);
          edit_user($_GET['user_id'], $user['login'], $_POST['role'], $_POST['validity'], $password);
          header('Location: users.php');
       }
