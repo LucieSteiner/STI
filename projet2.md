@@ -1,10 +1,9 @@
 # Projet 2 
----
+
 
 __Yosra Harbaoui & Luana Martelli__
 
 ## Rapport d'étude de menaces
----
 
 
 TODO : - add implémentation fonctionnelle  
@@ -36,9 +35,9 @@ Dans notre application, les données sensibles qu'il est nécessaire de protége
 
 ## Définition du périmètre de sécurisation
 
-Le scénario le plus plausible dans le cadre de cette application est un attaquant, ayant accès au service de messagerie, tente de trouver des failles afin de faire dysfonctionner le système selon ses désirs. Il s'agit donc avant tout de sécuriser le côté client, notamment de contrôler attentivement les formulaires auxquels un utilisateur a accès. Il s'agit ici d'attaques actives, ou le hacker essaye de prendre le contrôle de l'application.  
+Le scénario le plus plausible dans le cadre de cette application est un attaquant, ayant accès au service de messagerie, tente de trouver des failles afin de faire dysfonctionner le système selon ses désirs. Il s'agit donc avant tout de sécuriser le côté client, notamment de contrôler attentivement les formulaires auxquels un utilisateur a accès. Il s'agit ici d'attaques actives, ou l’attaquant essaye de prendre le contrôle de l'application.  
 
-On peut aussi imaginer que le hacker effectue des écoutes passives. Il faut donc aussi penser à sécuriser la transmission de données.  
+On peut aussi imaginer que l’attaquant effectue des écoutes passives. Il faut donc aussi penser à sécuriser la transmission de données.  
 
 Un des risques encourus par toute application est une attaque de type déni de service. Il est en effet possible pour un attaquant d'inonder le serveur de requêtes afin de le rendre inapte. Il existe diverses possibilités pour s'en prémunir, ou en tout cas dissuader l'attaquant, comme par exemple bloquer les adresses IP qui font trop de requêtes dans un court laps de temps. Cependant, un attaquant peut contourner cette mesure en utilisant des proxys, ou simplement plusieurs machines. La question du déni de service étant vaste et complexe et l'application n'étant pour le moment hébergée que sur un ordinateur en localhost, nous ne l'avons pas pris en compte dans le cadre de ce projet. 
 
@@ -95,8 +94,8 @@ Ainsi, Mallory ne peut pas établir une liste d'utilisateurs.
 
 De plus, l'URL ne divulgue pas d'informations sur un compte. Tout est stocké dans la session. C'est pourquoi, il est impossible de brute-forcer des URL contenant des noms d'utilisateurs.
 
-Finalement, l'entrée d'un nouveau mot de passe par l'utilisateur est problématique. En effet, afin de contrer les mots de passe du style "1234" ou "admin", une possibilité est de forcer l'utilisateur à entrer des mots de passe sûrs (un nombre minimal de caractères, des chiffres et des lettres ainsi que des caractères spéciaux). Cependant, ce genre de pratique pousse (trop) souvent l'utilisateur à ne pas retenir ce mot de passe et à le noter sous le clavier. Dans un cas comme dans l'autre, il y a un risque non-négligeable que le mot de passe soit faible (que ce soit dans sa construction ou dans son maintient). 
-Jean-Kévin étant conscient des risques, il a décidé que, dans le cadre de cette application, il est plus probable qu'un hacker obtienne une liste des noms d'utilisateurs et tente de brute-forcer les mots de passe. Il a donc choisi de forcer l'utilisateur à choisir un mot de passe fort. Et en ce qui concerne le risque que l'utilisateur l'écvrie derrière son clavier, il ne rentre pas dans le périmètre de sécurisation du projet.  
+Finalement, l'entrée d'un nouveau mot de passe par l'utilisateur est problématique. En effet, afin de contrer les mots de passe du style "1234" ou "admin", une possibilité est de forcer l'utilisateur à entrer des mots de passe sûrs (un nombre minimal de caractères, des chiffres et des lettres ainsi que des caractères spéciaux). Cependant, ce genre de pratique pousse (trop) souvent l'utilisateur à ne pas retenir ce mot de passe et à le noter sous le clavier. Dans un cas comme dans l'autre, il y a un risque non-négligeable que le mot de passe soit faible (que ce soit dans sa construction ou dans son maintien). 
+Jean-Kévin étant conscient des risques, il a décidé que, dans le cadre de cette application, il est plus probable qu'un hacker obtienne une liste des noms d'utilisateurs et tente de brute-forcer les mots de passe. Il a donc choisi de forcer l'utilisateur à choisir un mot de passe fort. Et en ce qui concerne le risque que l'utilisateur l'écrive derrière son clavier, il ne rentre pas dans le périmètre de sécurisation du projet.  
 Un mot de passe doit contenir au moins huit caractères, dont au moins une majuscule, un chiffre et un caractère spécial.  
 
 
@@ -114,8 +113,8 @@ Le mot de passe est une des informations les plus sensibles d'une application. L
 
 __Contre-mesures__
 
-La version de PHP utilisée pour ce projet est 5.4. La fonction crypt() utilisée génère des hash MD5 avec un sel choisi selon l'implémentation de la fonction. Il n'est donc pas nécessaire d'en ajouter un. Ce sel est cependant décrit dans la documentation comme faible. Cependant, plutôt que de générer un sel aléatoire et le stocker, il serait plus simple de mettre à jour la version de PHP à au moins 5.5, car cette version contient `password_hash()`, qui génère des hashs et des sels forts.  
-
+La version de PHP utilisée pour ce projet est 5.4. La fonction crypt() utilisée génère des hashs MD5 avec un sel choisi selon l'implémentation de la fonction. Il n'est donc pas nécessaire d'en ajouter un. Ce sel est cependant décrit dans la documentation comme faible. Cependant, plutôt que de générer un sel aléatoire et le stocker, il serait plus simple de mettre à jour la version de PHP à au moins 5.5, car cette version contient `password_hash()`, qui génère des hashs et des sels forts.  
+	
 (Source : https://secure.php.net/manual/fr/function.crypt.php) 
 
 
@@ -172,11 +171,11 @@ Scénario 5
 
 __Attaque :__ _Injections SQL_
 
-Mallory a appris qu’un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Grâce à cette attque, elle pourrait modifier la base de données à sa guise, supprimer ou ajouter des informations. Elle tente donc d'entrer la commande suivante dans la page de login : 
+Mallory a appris qu’un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Grâce à cette attaque, elle pourrait modifier la base de données à sa guise, supprimer ou ajouter des informations. Elle tente donc d'entrer la commande suivante dans la page de login : 
 ```
 ' OR 1=1 //
 ```
-Cette commande ferme le champs de texte (') et le met à `TRUE`. Tout le reste (donc le mot de passe) est commenté. Dans un cas où aucune sécurité n'est mise en place, cette instruction retourne `TRUE` et l'attaquant a donc accès aux informations de la table concernée. Mallory pourrait donc récupérer des données sensibles, comme des mots de passe, des rôles etc..
+Cette commande ferme le champ de texte (') et le met à `TRUE`. Tout le reste (donc le mot de passe) est commenté. Dans un cas où aucune sécurité n'est mise en place, cette instruction retourne `TRUE` et l'attaquant a donc accès aux informations de la table concernée. Mallory pourrait donc récupérer des données sensibles, comme des mots de passe, des rôles etc...
 
 __Classification :__ SIE
 
@@ -188,24 +187,37 @@ __Contre-mesures__
 -> utilisation de authentify_user() dans user avec les fonctions prepare() et execute() qui permettent de parser les strings et de rendre impraticable les injections SQL. Toute information entrée par l'utilisateur est alors traitée comme une string et il est donc impossible pour Christophe-Jean de pratiquer une injection SQL.
 
 
+Scénario 6 
+---
 
-non répudiation des messages ? 
-possible de faire une signature pour chaque user? ?
+__Attaque :__ _Injection XSS_
+
+Dans la même idée que le scénario précédent, il est possible d'injecter du code et de l'exécuter dans les entrées utilisateurs. Dans l'application de la partie 1, il était possible de faire cela :  
+![alt img](./img/xss1.PNG)  
+
+Ecriture d'un nouveau message avec injection de code PHP.  
+![alt img](./img/xss2.PNG)  
+
+Lorsque l'on veut lire le message, le corps est vide. On voit donc que le code a été exécuté.
+
+__Classification :__ STIDE
+
+Puisque dans ce scénario, Mallory exécute le code qu'elle souhaite, elle peut potentiellement menacer toutes les catégories. 
+
+__Contre-mesures__
+
+Jean-Kévin a utilisé la fonction `htmlspecialchars()` qui transforme les caractères spéciaux (comme les <>) en caractères normaux. Ils deviennent donc non-exécutable. L'attaque mentionnée ci-dessous devient donc irréalisable :  
+![alt img](./img/xss3.PNG)
+
+![alt img](./img/xss4.PNG)  
 
 
-Transmission d'information
-Rien dans les URL -> comment ? 
-Tout est set dans un cookie -> comment ? 
-
-injection xss
-
-
-Scénario 6
+Scénario 7
 ---
 
 __Attaque :__ _Brute force d'un compte_
 
-Mallory a réussi à récupéré le nom du compte de Jean-Kévin. Elle décide donc d'utiliser un outils pour brute-forcer les mots de passe et de tous les tester. Ce scénario diffère du premier car dans le cas précédent, on cherchait un compte avec un mot de passe faible. Dans ce cas, l'attaque est ciblée sur un compte, et on peut donc tester tous les mots de passe possible, y compris des mots de passe fort (même si du coup ça rallonge le temps de recherches). 
+Mallory a réussi à récupérer le nom du compte de Jean-Kévin. Elle décide donc d'utiliser un outil pour brute-forcer les mots de passe et de tous les tester. Ce scénario diffère du premier car dans le cas précédent, on cherchait un compte avec un mot de passe faible. Dans ce cas, l'attaque est ciblée sur un compte, et on peut donc tester tous les mots de passe possible, y compris des mots de passe fort (même si du coup ça rallonge le temps de recherches). 
 
 __Classification :__ (S)I(E)  
 
@@ -236,12 +248,12 @@ if ($image->check($_POST['captcha_code']) == true)
 ```
 
 
-Scénario 7A
+Scénario 8A
 ---
 
 __Attaque :__ _Vol de session Partie 1_
 
-Jean-Kévin, à la suite d'une rupture difficile, ère sur l'Internet mondial en recherche de réconfort. Christophe-Jean qui souhaite connaître les détails de la rupture, mais qui n'ose pas aller lui parler directement, envoie à Jean-Kévin un lien par mail qui lui promet qu'il va retrouver l'amour dans les deux minutes. Jean-Kévin, convaincu d'un signe du destin, clique sur le lien. Horreur ! Il s'agissait en fait d'une tentative de vol de session ! En effet, en cliquant sur le lien, Jean-Kévin a lancé un script qui récupère le cookie de session. 
+TODO Jean-Kévin, à la suite d'une rupture difficile, ère sur l'Internet mondial en recherche de réconfort. Christophe-Jean qui souhaite connaître les détails de la rupture, mais qui n'ose pas aller lui parler directement, envoie à Jean-Kévin un lien par mail qui lui promet qu'il va retrouver l'amour dans les deux minutes. Jean-Kévin, convaincu d'un signe du destin, clique sur le lien. Horreur ! Il s'agissait en fait d'une tentative de vol de session ! En effet, en cliquant sur le lien, Jean-Kévin a lancé un script qui récupère le cookie de session. 
 
 
 __Classification :__ SI(E)
@@ -262,7 +274,7 @@ ini_set('session.use_strict_mode', 1);
 
 
 
-Scénario 7B
+Scénario 8B
 ---
 
 __Attaque :__ _Vol de session Partie 2_
@@ -282,8 +294,7 @@ Afin de passer de http à https, il suit à la lettre un tutoriel qu'il a trouv�
 _Note_ : Le certificat ayant été auto-signé, il est nécessaire de l'autoriser lors de la première connexion au site après l'avoir installé.  
 
 
-
-Scénario 8
+Scénario 9
 ---
 
 __Attaque :__ _Fonction logout_
@@ -325,6 +336,16 @@ $_SESSION['LAST_ACTIVITY'] = time();
 
 Définir le périmètre de sécurité 
 choisir quoi faire et comment
+
+
+non répudiation des messages ? 
+possible de faire une signature pour chaque user? ?
+
+
+Transmission d'information
+Rien dans les URL -> comment ? 
+Tout est set dans un cookie -> comment ? 
+
 
 ## Conclusion
 
