@@ -71,7 +71,7 @@ la gloire, l'argent, le challenge, le défi, le sentiment de puissance, la volon
 
 ## Scénarios d’attaque et contre-mesures
 
-Pour les scénarios qui suivent, nous imaginerons que Jean-Kévin est un administrateur de notre application. Il est plutôt sympathique, mais un poil candide. Il pense vivre dans un monde sûr où tout est bien contrôlé. Tous ces scénarios d'attaques sont aussi valables pour un utilisateur lambda, cependant, il est toujours plus intéressant de viser la session d'un admin, visant ainsi plus de privilèges. 
+Pour les scénarios qui suivent, nous imaginerons que Jean-Kévin est un administrateur de notre application. Tous les scénarios d'attaques décrits ci-dessous sont aussi valables pour un utilisateur lambda, cependant, il est toujours plus intéressant de viser la session d'un admin, visant ainsi plus de privilèges. Mallory sera l'attaquant qui souhaite prendre le contrôle de l'application. 
 
 
 Scénario 1 
@@ -79,24 +79,25 @@ Scénario 1
 
 __Attaque :__ _Mots de passe faible_
 
-Jean-Christophe, l'ennemi juré de Jean-Kévin, arrive à obtenir une liste de noms d'utilisateur de l'application de messagerie. Grâce à cela, il va pouvoir tenter de brute-forcer les mots de passe des comptes et ainsi pouvoir usurper des informations, ou carrément une identité. Jean-Christophe sait qu'aucune mesure particulière n'a été mise en place pour contrôler la force des mots de passes utiliser. Il y a donc de fortes chances que les utilisateurs aient utilisés des mots de passe dit "faibles". 
+Dans ce premier scénario, nous partons du principe que Mallory a réussi à obtenir une liste de noms d'utilisateur de l'application de messagerie. Grâce à cela, elle va pouvoir tenter de brute-forcer les mots de passe des comptes et ainsi pouvoir usurper des informations, ou carrément des identités. Dans l'application de base, il n'y a aucune mesure particulière mise en place pour contrôler la force des mots de passes utiliser. Il y a donc de fortes chances que les utilisateurs aient utilisés des mots de passe dit "faibles". 
 
 __Classification :__ SI(E)
 
-En partant du principe que l'attaque réussit et que Jean-Christophe obtient des mots de passes, il peut non seulement voler des identités (S), mais il a du coup aussi accès à des informations sensibles (I), comme par exemple les messages. Pire encore, si on part du principe que beaucoup d'utilisateurs utilisent le même mot de passe pour tous leurs comptes, Jean-Christophe peut faire beaucoup de dégâts. Finalement, il est possible que Jean-Christphe arrive à hacker un compte administrateur, ce qui lui donnerait les pleins pouvoirs (E).
+En partant du principe que l'attaque réussit et que Mallory obtient des mots de passes, elle peut non seulement voler des identités (S), mais elle a du coup aussi accès à des informations sensibles (I), comme par exemple les messages. Pire encore, si on part du principe que beaucoup d'utilisateurs utilisent le même mot de passe pour tous leurs comptes, Mallory peut faire beaucoup de dégâts. Finalement, il est possible que Mallory arrive à hacker un compte administrateur, ce qui lui donnerait les pleins pouvoirs (E).
 
 __Contre-mesures__
 
-Jean-Kévin, connaissant les noirs desseins de son rival, a décidé d'agir. Tout d'abord, lors d'une connexion qui échoue, l'utilisateur n'a pas d'informations sur le paramètre erroné. Il reçoit simplement :
+Afin de contre-carrer les plans de Mallory, Jean-Kévin a décidé d'agir. Tout d'abord, lors d'une connexion qui échoue, l'utilisateur n'a pas d'informations sur le paramètre erroné. Il reçoit simplement :
 ```
 Wrong credentials!
 ```
-Ainsi, Jean-Christophe ne peut pas établir une liste d'utilisateurs. 
+Ainsi, Mallory ne peut pas établir une liste d'utilisateurs. 
 
 De plus, l'URL ne divulgue pas d'informations sur un compte. Tout est stocké dans la session. C'est pourquoi, il est impossible de brute-forcer des URL contenant des noms d'utilisateurs.
 
 Finalement, l'entrée d'un nouveau mot de passe par l'utilisateur est problématique. En effet, afin de contrer les mots de passe du style "1234" ou "admin", une possibilité est de forcer l'utilisateur à entrer des mots de passe sûrs (un nombre minimal de caractères, des chiffres et des lettres ainsi que des caractères spéciaux). Cependant, ce genre de pratique pousse (trop) souvent l'utilisateur à ne pas retenir ce mot de passe et à le noter sous le clavier. Dans un cas comme dans l'autre, il y a un risque non-négligeable que le mot de passe soit faible (que ce soit dans sa construction ou dans son maintient). 
-Jean-Kévin étant conscient des risques, il a décidé que, dans le cadre de cette application, il est plus probable qu'un hacker obtienne une liste des noms d'utilisateurs et tente de brute-forcer les mots de passe. Il a donc choisi de forcer l'utilisateur à choisir un mot de passe fort. Et en ce qui concerne le risque que l'utilisateur l'écvrie derrière son clavier, il ne rentre pas dans le périmètre de sécurisation du projet.
+Jean-Kévin étant conscient des risques, il a décidé que, dans le cadre de cette application, il est plus probable qu'un hacker obtienne une liste des noms d'utilisateurs et tente de brute-forcer les mots de passe. Il a donc choisi de forcer l'utilisateur à choisir un mot de passe fort. Et en ce qui concerne le risque que l'utilisateur l'écvrie derrière son clavier, il ne rentre pas dans le périmètre de sécurisation du projet.  
+Un mot de passe doit contenir au moins huit caractères, dont au moins une majuscule, un chiffre et un caractère spécial.  
 
 
 Scénario 2
@@ -104,13 +105,18 @@ Scénario 2
  
 __Attaque :__ _Hachage de mots de passe_
 
-TODO 
-Jean-Kévin le sait, un mot de passe, c'est important. Surtout si un utilisateur l'utilise pour plusieurs applications. C'est pourquoi Jean-Kévin a stocké le mot de passe haché dans la base de données. Ainsi, si la base de données est volée, les mots de passe ne sont pas dévoilés.
+Jean-Kévin le sait, un mot de passe, c'est important. Surtout si un utilisateur l'utilise pour plusieurs applications. C'est pourquoi Jean-Kévin a stocké le mot de passe haché dans la base de données. Ainsi, si la base de données est volée, les mots de passe ne sont pas dévoilés. Cependant, afin d'éviter une attaque sur les mots de passe à l'aide de rainbow tables, il faut ajouter un sel et le stocker. 
 -> ajouter un sel ??
 
-__Classification :__
+__Classification :__ I
+
+Le mot de passe est une des informations les plus sensibles d'une application. Les voler et les craquer est évidemment une fuite d'informations confidentielles (I).
 
 __Contre-mesures__
+
+La version de PHP utilisée pour ce projet est 5.4. La fonction crypt() utilisée génère des hash MD5 avec un sel choisi selon l'implémentation de la fonction. Il n'est donc pas nécessaire d'en ajouter un. Ce sel est cependant décrit dans la documentation comme faible. Cependant, plutôt que de générer un sel aléatoire et le stocker, il serait plus simple de mettre à jour la version de PHP à au moins 5.5, car cette version contient `password_hash()`, qui génère des hashs et des sels forts.  
+
+(Source : https://secure.php.net/manual/fr/function.crypt.php) 
 
 
 Scénario 3
@@ -118,16 +124,16 @@ Scénario 3
 
 __Attaque :__ _Divulgation d'information à travers l'URL_
 
-Dans l'état actuel de l'application, les URL existantes mais qui ne doivent pas être accessibles renvoient un 200 (car la page a été trouvée) et celles qui n'existent pas renvoie un 404. Afin d'obtenir des informations dans le but d'hacker une application, un pirate peut tenter d'accéder à des URL diverses pour découvrir quels sont les liens qui retournent une erreur ou non. 
+Dans l'état actuel de l'application, les URL existantes mais qui ne doivent pas être accessibles renvoient un 200 (car la page a été trouvée), mais est complètement blanche, alors que celles qui n'existent pas renvoie un 404. Afin d'obtenir des informations dans le but d'hacker une application, Mallory peut tenter d'accéder à des URL diverses pour découvrir quels sont les liens qui retournent une erreur ou non. 
 
 __Classification :__ I
 
-Comme expliqué dans l'attaque, il est possible d'obtenir des informations sur l'arborescence de l'application.
+Comme expliqué dans l'attaque, il est possible d'obtenir des informations sur l'arborescence de l'application (I). Ce genre d'informations peut s'avérer utile dans un cas de reverse engineering de l'application. 
 
 __Contre-mesures__
 
-Jean-Kévin n'est pas né de la dernière pluie et, pour ne pas dévoiler plus d'informations que nécessaire, il a fait deux changements dans le code : 
-- Tout d'abord, il a ajouté un fichier `index.php` dans chaque dossier pour éviter de révéler l'arborescence de l'application. Dans ce fichier, l'utilisateur est automatiquement redirigé sur la page de login. 
+Jean-Kévin a fait deux changements dans le code : 
+- Tout d'abord, il a ajouté un fichier `index.php` dans chaque dossier pour éviter de révéler l'arborescence de l'application. Dans ce fichier, l'utilisateur est automatiquement redirigé sur la page de login.  
 - De plus, il a modifié le fichier `httpd.conf` comme suit :
 ```
 ErrorDocument 404 http://localhost
@@ -153,7 +159,9 @@ Jean-Kévin a modifié le fichier de configuration `/etc/httpd/conf/httpd.conf`,
 ServerTokens Prod
 ServerSignature Off
 ```
-Afin de cacher les informations sur le serveur. 
+Afin de cacher les informations sur le serveur.  
+ServerToken notifie le niveau d'informations que le server va transmettre dans l'entête HTTP. Dans notre cas, Prod, fournit juste le nom du serveur, qui est l'information minimale. Par défaut, toutes les informations sont affichées.  
+ServerSignature, s'il est activé, note une ligne en bas de l'application contenant le serveur et sa version. Par défaut, cette option est désactivée, mais il est plus sage et plus lisible de l'écrire ici. 
 
 
 Scénario 5
@@ -161,7 +169,7 @@ Scénario 5
 
 __Attaque :__ _Injections SQL_
 
-Christophe-Jean a pris quelques cours de base de données pendant les vacances. Il a notamment appris qu’un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Voulant absolument connaître l'email de la copine de Jean-Kévin, il décide donc de passer à l'action... Dans la page de login, il entre donc les informations
+Mallory a appris qu’un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Voulant absolument connaître l'email de la copine de Jean-Kévin, il décide donc de passer à l'action... Dans la page de login, il entre donc les informations
 ```
 ' OR 1=1 //
 ```

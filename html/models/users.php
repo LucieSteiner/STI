@@ -16,7 +16,7 @@ function authentify_user($login, $password){
 	    $role = $row['role'];
         }
 	if($validity == 1){
-            if($password_hash == crypt($password, '$1$abcdefgh$')) {
+            if($password_hash == crypt($password)) {
                 return $role;
             }
         }

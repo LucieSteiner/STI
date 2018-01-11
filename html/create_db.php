@@ -28,9 +28,8 @@
  		    FOREIGN KEY(sender) REFERENCES users(id),
 		    FOREIGN KEY(receiver) REFERENCES users(id) )");
 
-    $salt = getenv('WEBSITE_SALT');
     $admin = array('login' => 'admin',
-                   'password' => crypt('admin', $salt),
+                   'password' => crypt('admin'),
                    'validity' => 1,
 		               'role' => 'admin');
 
