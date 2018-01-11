@@ -119,6 +119,9 @@ La version de PHP utilisée pour ce projet est 5.4. La fonction crypt() utilisé
 (Source : https://secure.php.net/manual/fr/function.crypt.php) 
 
 
+__Note :__ Le mot de passe de base du premier compte (admin/admin) est très faible et très simple. Il est donc fortement conseillé, une fois la mise en place de l'application et de la base de données, de modifier ce mot de passe.  
+
+
 Scénario 3
 ---
 
@@ -169,14 +172,15 @@ Scénario 5
 
 __Attaque :__ _Injections SQL_
 
-Mallory a appris qu’un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Voulant absolument connaître l'email de la copine de Jean-Kévin, il décide donc de passer à l'action... Dans la page de login, il entre donc les informations
+Mallory a appris qu’un site ayant une base de données et n'étant pas protégé est vulnérables à des attaques de type injections SQL. Grâce à cette attque, elle pourrait modifier la base de données à sa guise, supprimer ou ajouter des informations. Elle tente donc d'entrer la commande suivante dans la page de login : 
 ```
 ' OR 1=1 //
 ```
-Afin de récupérer des informations sensibles, comme des mots de passe, des rôles etc..
+Cette commande ferme le champs de texte (') et le met à `TRUE`. Tout le reste (donc le mot de passe) est commenté. Dans un cas où aucune sécurité n'est mise en place, cette instruction retourne `TRUE` et l'attaquant a donc accès aux informations de la table concernée. Mallory pourrait donc récupérer des données sensibles, comme des mots de passe, des rôles etc..
 
 __Classification :__ SIE
 
+Un accès non sécurisé à une base de données amène les pleins pouvoirs. Un attaquant peut donc modifier des comptes ou des messages (SIE).
 
 __Contre-mesures__
 
@@ -193,22 +197,24 @@ Transmission d'information
 Rien dans les URL -> comment ? 
 Tout est set dans un cookie -> comment ? 
 
+injection xss
+
 
 Scénario 6
 ---
 
 __Attaque :__ _Brute force d'un compte_
 
-Christophe-Jean, ayant suivi les informations de ces derniers jours, a appris qu'une base de données contant 9GB de mots de passe était disponible sur l'Internet mondial. Bien décidé à avoir l'email de la copine de Jean-Kévin, il décide de tester tous les mots de passe de la base de données sur le compte de Jean-Kévin. 
+Mallory a réussi à récupéré le nom du compte de Jean-Kévin. Elle décide donc d'utiliser un outils pour brute-forcer les mots de passe et de tous les tester. Ce scénario diffère du premier car dans le cas précédent, on cherchait un compte avec un mot de passe faible. Dans ce cas, l'attaque est ciblée sur un compte, et on peut donc tester tous les mots de passe possible, y compris des mots de passe fort (même si du coup ça rallonge le temps de recherches). 
 
 __Classification :__ (S)I(E)  
 
-Ici, le pirate cherche à obtenir un maximum d'informations sensibles (I) sur le maximum d'utilisateurs. Dans le cas où il arriverait à ses fins, il peut voler des identités (S) ou alors, s'il s'agit du compte d'un admin, élever ses privilèges (E).
+Ici, Mallory cherche à obtenir un maximum d'informations sensibles (I) sur le maximum d'utilisateurs. Dans le cas où il arriverait à ses fins, il peut voler des identités (S) ou alors, s'il s'agit du compte d'un admin, élever ses privilèges (E).
 
 
 __Contre-mesures__ 
 
-Jean-Kévin a aussi eu vent du leak de la base de données. Il décide alors de protéger un peu mieux la page de login. Au lieu de mettre un time-out au bout d'un certain temps, il a l'idée de mettre en place un captcha. Dès que l'utilisateur veut se connecter, il doit remplir un captcha. Après avoir téléchargé une librairie (source : https://github.com/dapphp/securimage), il ajoute dans la page login les quelques lignes :
+Jean-Kévin a aussi eu vent des plans de Mallory. Il décide alors de protéger un peu mieux la page de login. Au lieu de mettre un time-out au bout d'un certain temps, il a l'idée de mettre en place un captcha. Dès que l'utilisateur veut se connecter, il doit remplir un captcha. Après avoir téléchargé une librairie (source : https://github.com/dapphp/securimage), il ajoute dans la page login les quelques lignes :
 Pour la partie html
 ```html
 <div class="form-group">
@@ -314,6 +320,11 @@ if (isset($_SESSION['LAST_ACTIVITY']))
 $_SESSION['LAST_ACTIVITY'] = time();
 ```
 
+
+## Difficultés rencontrées
+
+Définir le périmètre de sécurité 
+choisir quoi faire et comment
 
 ## Conclusion
 

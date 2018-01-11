@@ -26,13 +26,18 @@ function get_message_detail($id){
 }
 
 function write_message($from, $to, $title, $message){
+    $fromSec = htmlspecialchars($from, ENT_SUBSTITUTE);
+    $toSec = htmlspecialchars($to, ENT_SUBSTITUTE);
+    $titleSec = htmlspecialchars($title, ENT_SUBSTITUTE);
+    $messageSec = htmlspecialchars($message, ENT_SUBSTITUTE);
+
     $file_db = connect();
     date_default_timezone_set('UTC');
     $formatted_time = date('Y-m-d H:i:s', time());
     $result = $file_db->prepare('SELECT id FROM users WHERE login = ?');
-    $result->execute(array($from));
+    $result->execute(array($fromSec));
     $sender = $result->fetch();
-    $result->execute(array($to));
+    $result->execute(array($toSec));
     $receiver = $result->fetch();
     if(empty($receiver)){
         return false;
