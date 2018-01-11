@@ -20,3 +20,24 @@
 4. Accéder à l'application
 
 - Accéder à http://localhost dans un navigateur
+
+
+# STI Projet 2 #
+### Yosra Harbaoui et Luana Martelli, 11.01.2018 ###
+
+## Aspects sécuritaires ##
+
+Depuis le dossier STI/
+
+1. Fichier de configuration 
+
+```bash
+sudo mv conf/httpd.conf /etc/httpd/conf/httpd.conf
+```
+
+2. Script SSL
+```bash
+sudo bash /conf/ssl/enable-https.sh 
+```
+
+Note : lors de la première connexion sur localhost, il faut reconnaître le certificat auto-signé comme valide.
