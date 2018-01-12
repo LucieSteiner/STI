@@ -44,6 +44,9 @@
  *
  */
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 // Remove the "//" from the following line for debugging problems
 // error_reporting(E_ALL); ini_set('display_errors', 1);
 
