@@ -29,15 +29,12 @@
 
 Depuis le dossier STI/
 
-1. Fichier de configuration 
+Lancer le script project-2-install.sh.
 
-```bash
-sudo mv conf/httpd.conf /etc/httpd/conf/httpd.conf
-```
+Ce script contient toutes les commandes d'installation pour la partie sécurité.
 
-2. Script SSL
-```bash
-sudo bash /conf/ssl/enable-https.sh 
-```
+Il faut accepter le téléchargement des packages. 
+
+Ensuite, se rendre sur localhost.
 
 Note : lors de la première connexion sur localhost, il faut reconnaître le certificat auto-signé comme valide.
