@@ -35,6 +35,10 @@ Ce script contient toutes les commandes d'installation pour la partie sécurité
 
 Il faut accepter le téléchargement des packages. 
 
+Lancer la commande 
+
+`sudo systemctl start httpd`
+
 Ensuite, se rendre sur localhost.
 
 Note : lors de la première connexion sur localhost, il faut reconnaître le certificat auto-signé comme valide.
